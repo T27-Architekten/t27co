@@ -3,8 +3,9 @@ const User = require("../models/Users");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 var bcrypt = require("bcryptjs");
-const JWTsec = process.env.REACT_APP_JWT_SECRET;
+const JWTSec = process.env.REACT_APP_JWT_SECRET;
 const jwt = require("jsonwebtoken");
+const fetchuser = require("../middleware/fetchuser");
 
 // Create a User using: POST "/api/auth/createuser". No login required.
 router.post(
@@ -51,7 +52,7 @@ router.post(
       };
 
       // Sign user id with a JWT secret.
-      const authtoken = jwt.sign(data, JWTsec);
+      const authtoken = jwt.sign(data, JWTSec);
       console.log(authtoken);
       success = true;
       // Return a user id.
@@ -106,9 +107,9 @@ router.post(
       const data = {
         user: user.id,
       };
-      // const authtoken = jwt.sign(data, JWT_SECRET);
+      const authtoken = jwt.sign(data, JWTSec);
       success = true;
-      // res.json({ success, authtoken });
+      res.json({ success, authtoken });
     } catch (error) {
       success = false;
       console.error(error.message);
@@ -118,19 +119,19 @@ router.post(
 );
 
 // ROUTE 3: Get the user details using : POST "/api/auth/getuser". Login required.
-// router.post("/getuser", fetchuser, async (req, res) => {
-//   try {
-//     let success = false;
-//     const userId = req.user.id;
-//     // Find the user by id and -password is added to get user details except password.
-//     const user = await User.findById(userId).select("-password");
-//     success = true;
-//     res.send({ success, user });
-//   } catch (error) {
-//     success = false;
-//     console.error(error.message);
-//     res.status(500).json({ success, Error: "Internal server error." });
-//   }
-// });
+router.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    let success = false;
+    const userId = req.user.id;
+    // Find the user by id and -password is added to get user details except password.
+    const user = await User.findById(userId).select("-password");
+    success = true;
+    res.send({ success, user });
+  } catch (error) {
+    success = false;
+    console.error(error.message);
+    res.status(500).json({ success, Error: "Internal server error." });
+  }
+});
 
 module.exports = router;
