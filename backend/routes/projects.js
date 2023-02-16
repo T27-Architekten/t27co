@@ -80,7 +80,7 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
 
     const { pname, description, location, year, category, inprogress } =
       req.body;
-    // Create a newProject object.
+    // Get data from the user and store it in newProject object.
     const newProject = {};
     if (pname) {
       newProject.pname = pname;
@@ -122,27 +122,27 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
   }
 });
 
-// ROUTE 4: Delete an existing note : DELETE "/api/auth/deletenote". Login required.
-// router.delete("/deletenote/:id", fetchuser, async (req, res) => {
-//   try {
-//     // Find the note if it is there.
-//     let note = await Note.findById(req.params.id);
-//     if (!note) {
-//       return res.status(404).send({ Unsuccessfull: "Note not found." });
-//     }
+// ROUTE 4: Delete an existing project : DELETE "/api/auth/deleteproject". Login required.
+router.delete("/deleteproject/:id", fetchuser, async (req, res) => {
+  try {
+    // Find the project if it is there.
+    let project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).send({ Unsuccessfull: "Project not found." });
+    }
 
-//     // Check if the logged-in user is the authorized user and note belongs to the user who logged in.
-//     if (note.user.toString() !== req.user.id) {
-//       return res.status(401).send("Not allowed");
-//     }
+    // Check if the logged-in user is the authorized user and project belongs to the user who logged in.
+    // if (project.user.toString() !== req.user.id) {
+    //   return res.status(401).send("Not allowed");
+    // }
 
-//     // Find and delete the note.
-//     note = await Note.findByIdAndDelete(req.params.id);
-//     res.json({ Success: "The note has been deleted.", note: note });
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ Error: "Internal server error." });
-//   }
-// });
+    // Find and delete the project.
+    project = await Project.findByIdAndDelete(req.params.id);
+    res.json({ Success: "The project has been deleted.", project: project });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ Error: "Internal server error." });
+  }
+});
 
 module.exports = router;
