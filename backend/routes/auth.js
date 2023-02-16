@@ -53,7 +53,6 @@ router.post(
 
       // Sign user id with a JWT secret.
       const authtoken = jwt.sign(data, JWTSec);
-      console.log(authtoken);
       success = true;
       // Return a user id.
       res.json({ authtoken });

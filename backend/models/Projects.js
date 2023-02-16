@@ -2,23 +2,28 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ProjectSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+  },
+  alterby: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
   pname: {
     type: String,
     required: true,
   },
-  location: {
+  description: {
     type: String,
   },
-  description: {
+  location: {
     type: String,
   },
   year: {
     type: Number,
-    required: true,
   },
   category: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
   inprogress: {
     type: String,
@@ -29,4 +34,4 @@ const ProjectSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("Projects", ProjectSchema);
+module.exports = mongoose.model("projects", ProjectSchema);
