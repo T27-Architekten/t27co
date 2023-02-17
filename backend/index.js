@@ -22,5 +22,5 @@ app.use("/api/projects", require("./routes/projects"));
 // });
 
 app.listen(port, () => {
-  console.log(`Example app listening on the given port.`);
+  console.log(`Example app listening on the ${port}.`);
 });
