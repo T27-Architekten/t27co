@@ -25,20 +25,20 @@ router.get("/fetchallprojects", fetchuser, async (req, res) => {
   }
 });
 
-// ROUTE 2: Add a new project in the user account : POST "/api/auth/addnote". Login required.
+// ROUTE 2: Add a new project in the user account : POST "/api/projects/addproject". Login required.
 router.post(
   "/addproject",
   fetchuser,
   [
-    body("pname", "Enter a title of a minimum 5 characters.").isLength({
+    body("pname", "Enter a title of a minimum 3 characters.").isLength({
       min: 3,
     }),
-    body("location", "Enter a location of a minimum 5 characters.").isLength({
-      min: 5,
+    body("location", "Enter a location of a minimum 3 characters.").isLength({
+      min: 3,
     }),
     body("year", "Enter a year in digits. It must contain exact four digits.")
       .isNumeric()
-      .isLength({ min: 4, max: 4 }),
+      .isLength({ max: 4 }),
   ],
   async (req, res) => {
     try {

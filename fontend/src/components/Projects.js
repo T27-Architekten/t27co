@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import background from "../images/list1.jpg";
 
 const Projects = () => {
@@ -9,9 +9,13 @@ const Projects = () => {
         <p>Our popular projects</p>
       </div>
       <div className="container col-5 ">
-        <ui>
+        <ul>
           <li className="card row my-4">
-            <img src={background} className="card-img-top" alt="..." />
+            <img
+              src={background}
+              className="card-img-top object-fit-cover border rounded"
+              alt="..."
+            />
             <div className="card-body">
               <h5 className="card-title">Card title</h5>
               <p className="card-text">Description</p>
@@ -24,7 +28,7 @@ const Projects = () => {
               <p className="card-text">Description</p>
             </div>
           </li>
-        </ui>
+        </ul>
       </div>
     </div>
   );
