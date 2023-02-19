@@ -50,11 +50,8 @@ const Addproject = (props) => {
   return (
     <div className="container col-md-5 mt-5 shadow p-3 mb-5 bg-body-tertiary rounded">
       <h2 className="d-flex justify-content-evenly">Add a project</h2>
-      <form className="my-3">
-        <div className="mb-3">
-          <label htmlFor="pname" className="form-label">
-            Project name (minimum of at least 3 chararacters)
-          </label>
+      <form className=" my-3">
+        <div className="form-floating mb-3">
           <input
             type="text"
             className="form-control"
@@ -67,11 +64,11 @@ const Addproject = (props) => {
             value={project.pname}
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Description
+          <label htmlFor="pname " className="form-label">
+            Project name (minimum of at least 3 chararacters)
           </label>
+        </div>
+        <div className="form-floating mb-3">
           <textarea
             type="text"
             value={project.description}
@@ -82,11 +79,11 @@ const Addproject = (props) => {
             placeholder="Description"
             required
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="location" className="form-label">
-            Location
+          <label htmlFor="description" className="form-label">
+            Description
           </label>
+        </div>
+        <div className="form-floating mb-3">
           <input
             placeholder={"Location. It must be a minimum of 3 characters."}
             type="text"
@@ -97,11 +94,11 @@ const Addproject = (props) => {
             onChange={onChange}
             value={project.location}
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="year" className="form-label">
-            Year
+          <label htmlFor="location" className="form-label">
+            Location
           </label>
+        </div>
+        <div className="form-floating mb-3">
           <input
             placeholder={"Year of initiation"}
             type="number"
@@ -112,12 +109,12 @@ const Addproject = (props) => {
             onChange={onChange}
             value={project.year}
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="category" className="form-label">
-            Category
+          <label htmlFor="year" className="form-label">
+            Year
           </label>
-          <input
+        </div>
+        <div className="form-floating mb-3">
+          {/* <input
             placeholder={"Category"}
             type="text"
             className="form-control"
@@ -125,13 +122,29 @@ const Addproject = (props) => {
             name="category"
             onChange={onChange}
             value={project.category}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inprogress" className="form-label">
-            Progress
+          /> */}
+          <select
+            className="form-select"
+            aria-label="Default select"
+            placeholder={"Category"}
+            id="category"
+            name="category"
+            onChange={onChange}
+            value={project.category}
+          >
+            <option value=""></option>
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Residential and Commercial">
+              Residential and Commercial
+            </option>
+          </select>
+          <label htmlFor="category" className="form-label">
+            Category
           </label>
-          <input
+        </div>
+        <div className="form-floating mb-3">
+          {/* <input
             placeholder={"Progress"}
             type="text"
             className="form-control"
@@ -139,11 +152,26 @@ const Addproject = (props) => {
             name="inprogress"
             onChange={onChange}
             value={project.inprogress}
-          />
+          /> */}
+          <select
+            className="form-select"
+            aria-label="Default select"
+            placeholder={"Progress"}
+            id="inprogress"
+            name="inprogress"
+            onChange={onChange}
+            value={project.inprogress}
+          >
+            <option value=""></option>
+            <option value="inprogress">In progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <label htmlFor="inprogress" className="form-label">
+            Progress
+          </label>
         </div>
-        <div style={{ textAlign: "center" }}>
+        <div className="d-flex justify-content-evenly">
           <button
-            type="submit"
             disabled={
               project.pname.length < 3 ||
               project.location.length < 3 ||
@@ -153,6 +181,12 @@ const Addproject = (props) => {
             onClick={handleClick}
           >
             Add project
+          </button>
+          <button
+            className="btn btn-warning"
+            onClick={() => navigate("/projects")}
+          >
+            All Projects
           </button>
         </div>
       </form>
