@@ -6,9 +6,7 @@ const ProjectSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  alterby: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
+
   pname: {
     type: String,
     required: true,
@@ -26,6 +24,9 @@ const ProjectSchema = new Schema({
     type: String,
   },
   inprogress: {
+    type: String,
+  },
+  alteredby: {
     type: String,
   },
   date: {

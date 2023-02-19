@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
-import projectContext from "../context/projects/projectContext";
+import { useNavigate } from "react-router-dom";
+import projectContext from "../../context/projects/projectContext";
 
 const Addproject = (props) => {
   const context = useContext(projectContext);
   const { addProject } = context;
+  const navigate = useNavigate();
   const { showAlert } = props;
   const [project, setProject] = useState({
     pname: "",
@@ -15,6 +17,7 @@ const Addproject = (props) => {
   });
   const handleClick = (e) => {
     e.preventDefault();
+    props.setProgress(10);
     addProject(
       project.pname,
       project.description,
@@ -23,11 +26,12 @@ const Addproject = (props) => {
       project.category,
       project.inprogress
     );
+    props.setProgress(50);
     showAlert(
-      '"' + project.title + '" project is successfully added to your projects.',
+      '"' + project.pname + '" project is successfully added to your projects.',
       "success"
     );
-
+    props.setProgress(70);
     setProject({
       pname: "",
       description: "",
@@ -36,6 +40,8 @@ const Addproject = (props) => {
       category: "",
       inprogress: "",
     });
+    navigate("/projects");
+    props.setProgress(100);
   };
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });

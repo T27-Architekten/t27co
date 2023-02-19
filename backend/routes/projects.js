@@ -49,6 +49,12 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
+      // get name of the user for the variable alteredby.
+      const userId = req.user.id;
+      const user = await User.findById(userId).select("-password");
+      if (!user) {
+        return res.status(400).json({ Error: "Please login first." });
+      }
       // Variable will take and store data in 'project'.
       const project = new Project({
         pname,
@@ -57,8 +63,8 @@ router.post(
         year,
         category,
         inprogress,
-        user: req.user.id,
-        alterby: req.user.id,
+        user: user.id,
+        alteredby: user.name,
       });
       // Data is sent to the db.
       const saveProject = await project.save();
@@ -70,7 +76,7 @@ router.post(
   }
 );
 
-// ROUTE 3: Edit an existing project : PUT "/api/auth/updateproject". Login required.
+// ROUTE 3: Edit an existing project : PUT "/api/projects/updateproject". Login required.
 router.put("/updateproject/:id", fetchuser, async (req, res) => {
   try {
     // If the user is not authenticated.
@@ -80,6 +86,14 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
 
     const { pname, description, location, year, category, inprogress } =
       req.body;
+
+    // get name of the user for the variable alteredby.
+    const userId = req.user.id;
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(400).json({ Error: "Please login first." });
+    }
+
     // Get data from the user and store it in newProject object.
     const newProject = {};
     if (pname) {
@@ -100,7 +114,7 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
     if (inprogress) {
       newProject.inprogress = inprogress;
     }
-    newProject.alterby = req.user.id;
+    newProject.alteredby = user.name;
 
     // Find the project and update it.
     let project = await Project.findById(req.params.id);
@@ -116,6 +130,7 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
       { new: true }
     );
     res.json(project);
+    console.log(JSON.stringify(project));
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ Error: "Internal server error." });
@@ -138,7 +153,7 @@ router.delete("/deleteproject/:id", fetchuser, async (req, res) => {
 
     // Find and delete the project.
     project = await Project.findByIdAndDelete(req.params.id);
-    res.json({ Success: "The project has been deleted.", project: project });
+    res.json({ Success: "The project has been deleted." });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ Error: "Internal server error." });
