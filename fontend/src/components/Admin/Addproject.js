@@ -15,6 +15,19 @@ const Addproject = (props) => {
     category: "",
     inprogress: "",
   });
+
+  // Year range for the project.
+  let years = [];
+  const allYears = () => {
+    const currentYear = 2000;
+    let startYear = new Date().getFullYear();
+    while (startYear >= currentYear) {
+      years.push(startYear--);
+    }
+  };
+  // Calling the year funciton.
+  allYears();
+
   const handleClick = (e) => {
     e.preventDefault();
     props.setProgress(10);
@@ -99,6 +112,27 @@ const Addproject = (props) => {
           </label>
         </div>
         <div className="form-floating mb-3">
+          <select
+            className="form-select"
+            aria-label="Default select"
+            placeholder={"Year"}
+            id="year"
+            name="year"
+            onChange={onChange}
+            value={project.year}
+          >
+            <option value=""></option>
+            {years.map((y, i) => (
+              <option value={y} key={i}>
+                {y}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="year" className="form-label">
+            Year
+          </label>
+        </div>
+        {/* <div className="form-floating mb-3">
           <input
             placeholder={"Year of initiation"}
             type="number"
@@ -112,7 +146,7 @@ const Addproject = (props) => {
           <label htmlFor="year" className="form-label">
             Year
           </label>
-        </div>
+        </div> */}
         <div className="form-floating mb-3">
           {/* <input
             placeholder={"Category"}

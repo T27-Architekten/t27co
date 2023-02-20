@@ -18,6 +18,8 @@ const ProjectState = (props) => {
       },
     });
     const json = await response.json();
+    // Sort projects according to the year.
+    json.sort((a, b) => b.year - a.year);
     setProjects(json);
   };
 

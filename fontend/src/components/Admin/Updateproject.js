@@ -32,6 +32,18 @@ const Updateproject = (props) => {
     props.setProgress(10);
   };
 
+  // Year range for the project.
+  let years = [];
+  const allYears = () => {
+    const currentYear = 2000;
+    let startYear = new Date().getFullYear();
+    while (startYear >= currentYear) {
+      years.push(startYear--);
+    }
+  };
+  // Calling the year funciton.
+  allYears();
+
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
@@ -146,6 +158,27 @@ const Updateproject = (props) => {
             </label>
           </div>
           <div className="form-floating mb-3">
+            <select
+              className="form-select"
+              aria-label="Default select"
+              placeholder={"Year"}
+              id="year"
+              name="year"
+              onChange={onChange}
+              value={project.year}
+            >
+              <option value=""></option>
+              {years.map((y, i) => (
+                <option value={y} key={i}>
+                  {y}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="year" className="form-label">
+              Year
+            </label>
+          </div>
+          {/* <div className="form-floating mb-3">
             <input
               placeholder={"Year of initiation"}
               type="number"
@@ -159,7 +192,7 @@ const Updateproject = (props) => {
             <label htmlFor="year" className="form-label">
               Year (Required)
             </label>
-          </div>
+          </div> */}
           <div className="form-floating mb-3">
             {/* <input
               placeholder={"Category"}
