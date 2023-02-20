@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className="App">
-      <ProjectState>
+      <ProjectState setProgress={setProgress}>
         <Router>
           <Navbar />
           <LoadingBar height={2.5} color="#ffc107" progress={progress} />

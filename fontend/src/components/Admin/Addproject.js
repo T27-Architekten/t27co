@@ -30,7 +30,6 @@ const Addproject = (props) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    props.setProgress(10);
     addProject(
       project.pname,
       project.description,
@@ -39,12 +38,10 @@ const Addproject = (props) => {
       project.category,
       project.inprogress
     );
-    props.setProgress(50);
     showAlert(
       '"' + project.pname + '" project is successfully added to your projects.',
       "success"
     );
-    props.setProgress(70);
     setProject({
       pname: "",
       description: "",
@@ -54,7 +51,6 @@ const Addproject = (props) => {
       inprogress: "",
     });
     navigate("/projects");
-    props.setProgress(100);
   };
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });

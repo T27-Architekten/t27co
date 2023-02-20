@@ -8,6 +8,7 @@ const ProjectState = (props) => {
 
   // Get all projects.
   const getProjects = async () => {
+    props.setProgress(10);
     // Api Call
     const response = await fetch(`${host_env}/api/projects/fetchallprojects`, {
       method: "GET",
@@ -17,10 +18,14 @@ const ProjectState = (props) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjNlZGM4OTFlZGYyODFkOWIzMzc0MzRkIiwiaWF0IjoxNjc2NTMzOTk1fQ.YdvFDh0LSBFtY0rAD3XfGQtCazTK50TPIjBu0fnf94c",
       },
     });
+    props.setProgress(30);
     const json = await response.json();
+    props.setProgress(50);
     // Sort projects according to the year.
     json.sort((a, b) => b.year - a.year);
+    props.setProgress(70);
     setProjects(json);
+    props.setProgress(100);
   };
 
   // Add new note.
@@ -32,8 +37,8 @@ const ProjectState = (props) => {
     category,
     inprogress
   ) => {
+    props.setProgress(10);
     // Api Call
-
     const response = await fetch(`${host_env}/api/projects/addproject`, {
       method: "POST",
       headers: {
@@ -51,13 +56,16 @@ const ProjectState = (props) => {
         inprogress,
       }),
     });
-
+    props.setProgress(50);
     const json = await response.json();
+    props.setProgress(70);
     setProjects(projects.concat(json.Project));
+    props.setProgress(100);
   };
 
   //   // Delete an existing project.
   const deleteProject = async (id) => {
+    props.setProgress(10);
     // Api Call
     const response = await fetch(
       `${host_env}/api/projects/deleteproject/${id}`,
@@ -71,12 +79,16 @@ const ProjectState = (props) => {
         },
       }
     );
+    props.setProgress(30);
     const json = await response.json();
     console.log(json);
+    props.setProgress(50);
     const newProject = projects.filter((project) => {
       return project._id !== id;
     });
+    props.setProgress(70);
     setProjects(newProject);
+    props.setProgress(100);
   };
 
   //   // Edit an existing project.
@@ -89,6 +101,7 @@ const ProjectState = (props) => {
     category,
     inprogress
   ) => {
+    props.setProgress(10);
     // Api Call
     const response = await fetch(
       `${host_env}/api/projects/updateproject/${id}`,
@@ -110,9 +123,10 @@ const ProjectState = (props) => {
         }),
       }
     );
-
+    props.setProgress(30);
     const json = await response.json();
     console.log(json);
+    props.setProgress(50);
     let newProjects = JSON.parse(JSON.stringify(projects));
     // Logic to edit in client
     for (let index = 0; index < projects.length; index++) {
@@ -127,7 +141,9 @@ const ProjectState = (props) => {
         break;
       }
     }
+    props.setProgress(70);
     setProjects(newProjects);
+    props.setProgress(100);
   };
 
   return (

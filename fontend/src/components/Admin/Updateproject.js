@@ -13,7 +13,7 @@ const Updateproject = (props) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    props.setProgress(10);
+
     editProject(
       project._id,
       project.pname,
@@ -23,13 +23,12 @@ const Updateproject = (props) => {
       project.category,
       project.inprogress
     );
-    props.setProgress(70);
+
     showAlert(
       '"' + project.pname + '" project is successfully updated.',
       "success"
     );
     navigate("/projects");
-    props.setProgress(10);
   };
 
   // Year range for the project.
@@ -86,16 +85,12 @@ const Updateproject = (props) => {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  props.setProgress(10);
                   deleteProject(project._id);
-                  props.setProgress(750);
                   showAlert(
                     '"' + project.pname + '" note is successfully deleted.',
                     "success"
                   );
-                  props.setProgress(70);
                   navigate("/projects");
-                  props.setProgress(100);
                 }}
                 data-bs-dismiss="modal"
               >

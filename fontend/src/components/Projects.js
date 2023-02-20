@@ -9,9 +9,9 @@ const Projects = (props) => {
 
   useEffect(() => {
     //  if (localStorage.getItem("token")) {
-    props.setProgress(10);
+    // props.setProgress(10);
     getProjects();
-    props.setProgress(100);
+    // props.setProgress(100);
     //  } else {
     //    navigate("/login");
     //  }
