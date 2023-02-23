@@ -42,6 +42,7 @@ router.post(
         name: req.body.name,
         email: req.body.email,
         password: secPass,
+        role: req.body.role,
       });
 
       // Get user id.
@@ -109,6 +110,7 @@ router.post(
       const authtoken = jwt.sign(data, JWTSec);
       success = true;
       res.json({ success, authtoken });
+      console.log(success, authtoken);
     } catch (error) {
       success = false;
       console.error(error.message);
@@ -118,12 +120,42 @@ router.post(
 );
 
 // ROUTE 3: Get the user details using : POST "/api/auth/getuser". Login required.
-router.post("/getuser", fetchuser, async (req, res) => {
+router.get("/getuser", fetchuser, async (req, res) => {
   try {
     let success = false;
     const userId = req.user.id;
     // Find the user by id and -password is added to get user details except password.
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId).select("-password").select("-_id");
+    success = true;
+    res.json({ success, user });
+  } catch (error) {
+    success = false;
+    console.error(error.message);
+    res.status(500).json({ success, Error: "Internal server error." });
+  }
+});
+
+// ROUTE 4: Edit the user details using : POST "/api/auth/edituser". Login Required.
+router.post("/edituser", fetchuser, async (req, res) => {
+  try {
+    let success = false;
+    // Get detials from the frontend
+    const updateUser = req.body;
+
+    // Get user id from the token.
+    const userId = req.user.id;
+    // Check if user is in the database.
+    let user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(400).json({ Error: "Please login first." });
+    }
+
+    // Update user details
+    user = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateUser },
+      { new: true }
+    ).select("-password");
     success = true;
     res.send({ success, user });
   } catch (error) {

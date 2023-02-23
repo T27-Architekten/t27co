@@ -8,16 +8,17 @@ const User = require("../models/Users");
 
 // -------------------- All project end points -------------------
 
-// ROUTE 1: Get all projects of the user : GET "/api/projects/fetchallprojects". Login required.
-router.get("/fetchallprojects", fetchuser, async (req, res) => {
+// ROUTE 1: Get all projects of the user : GET "/api/projects/fetchallprojects".
+// router.get("/fetchallprojects", fetchuser, async (req, res) => {
+router.get("/fetchallprojects", async (req, res) => {
   try {
-    // Check if user exists.
-    const userId = req.user.id;
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
-      return res.status(400).json({ Error: "Please login first." });
-    }
-    const projects = await Project.find({ user: req.user.id });
+    // // Check if user exists.
+    // const userId = req.user.id;
+    // const user = await User.findById(userId).select("-password");
+    // if (!user) {
+    //   return res.status(400).json({ Error: "Please login first." });
+    // }
+    const projects = await Project.find();
     res.json(projects);
   } catch (error) {
     console.error(error.message);
@@ -79,11 +80,6 @@ router.post(
 // ROUTE 3: Edit an existing project : PUT "/api/projects/updateproject". Login required.
 router.put("/updateproject/:id", fetchuser, async (req, res) => {
   try {
-    // If the user is not authenticated.
-    // if (note.user.toString() !== req.user.id) {
-    //   return res.status(401).send("Not allowed");
-    // }
-
     const { pname, description, location, year, category, inprogress } =
       req.body;
 
@@ -116,7 +112,7 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
     }
     newProject.alteredby = user.name;
 
-    // Find the project and update it.
+    // Find the project and update it. ----
     let project = await Project.findById(req.params.id);
 
     // If the project is not found.

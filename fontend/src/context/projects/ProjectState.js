@@ -12,11 +12,6 @@ const ProjectState = (props) => {
     // Api Call
     const response = await fetch(`${host_env}/api/projects/fetchallprojects`, {
       method: "GET",
-      headers: {
-        // "auth-token": localStorage.getItem("token"),
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjNlZGM4OTFlZGYyODFkOWIzMzc0MzRkIiwiaWF0IjoxNjc2NTMzOTk1fQ.YdvFDh0LSBFtY0rAD3XfGQtCazTK50TPIjBu0fnf94c",
-      },
     });
     props.setProgress(30);
     const json = await response.json();
@@ -28,7 +23,7 @@ const ProjectState = (props) => {
     props.setProgress(100);
   };
 
-  // Add new note.
+  // Add new note. Authentication is required.
   const addProject = async (
     pname,
     description,
@@ -43,9 +38,7 @@ const ProjectState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "auth-token": localStorage.getItem("token"),
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjNlZGM4OTFlZGYyODFkOWIzMzc0MzRkIiwiaWF0IjoxNjc2NTMzOTk1fQ.YdvFDh0LSBFtY0rAD3XfGQtCazTK50TPIjBu0fnf94c",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         pname,
@@ -63,7 +56,7 @@ const ProjectState = (props) => {
     props.setProgress(100);
   };
 
-  //   // Delete an existing project.
+  //   // Delete an existing project. Authentication required.
   const deleteProject = async (id) => {
     props.setProgress(10);
     // Api Call
@@ -73,9 +66,7 @@ const ProjectState = (props) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          // "auth-token": localStorage.getItem("token"),
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjNlZGM4OTFlZGYyODFkOWIzMzc0MzRkIiwiaWF0IjoxNjc2NTMzOTk1fQ.YdvFDh0LSBFtY0rAD3XfGQtCazTK50TPIjBu0fnf94c",
+          "auth-token": localStorage.getItem("token"),
         },
       }
     );
@@ -91,7 +82,7 @@ const ProjectState = (props) => {
     props.setProgress(100);
   };
 
-  //   // Edit an existing project.
+  //   // Edit an existing project. Authentication required.
   const editProject = async (
     id,
     pname,
@@ -149,7 +140,6 @@ const ProjectState = (props) => {
   return (
     <ProjectContext.Provider
       value={{ projects, addProject, getProjects, editProject, deleteProject }}
-      // value={{ projects, getProjects, addProject, deleteProject, editProject }}÷
     >
       {props.children}
     </ProjectContext.Provider>

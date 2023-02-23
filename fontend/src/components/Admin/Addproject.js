@@ -156,7 +156,7 @@ const Addproject = (props) => {
           <select
             className="form-select"
             aria-label="Default select"
-            placeholder={"Category"}
+            placeholder="Category"
             id="category"
             name="category"
             onChange={onChange}

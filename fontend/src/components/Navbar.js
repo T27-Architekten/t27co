@@ -1,13 +1,19 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = (props) => {
   let location = useLocation();
+  let navigate = useNavigate();
 
+  const onClick = () => {
+    localStorage.clear();
+    navigate("/login");
+    props.showAlert("Logout successfully", "success");
+  };
   return (
     // <div className={window.location.pathname === "/" ? "invisible" : "visible"}>
-    <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <div className="sticky-top">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary ">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             T27
@@ -19,7 +25,7 @@ export const Navbar = () => {
             data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
-            aria-label="Toggle navigation"
+            aria-label="Toggle navigate"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -46,17 +52,39 @@ export const Navbar = () => {
                   Contact Us
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${
-                    location.pathname === "/addproject" ? "active" : null
-                  }`}
-                  to="/addproject"
-                >
-                  Add project
-                </Link>
-              </li>
             </ul>
+            <form className="d-flex" role="search">
+              {localStorage.getItem("token") ? (
+                <>
+                  {/* <i
+                    className="fa-solid fa-file-circle-plus mx-2"
+                    role="button"
+                    
+                  ></i>
+                  <i
+                    className="fa-solid fa-user-plus mx-2 "
+                    role="button"
+                    
+                  ></i> */}
+                  <i
+                    className="fa-solid fa-circle-user mx-2 "
+                    role="button"
+                    onClick={() => navigate("/user")}
+                  ></i>
+                  <i
+                    className="fa-solid fa-right-from-bracket mx-2"
+                    role="button"
+                    onClick={() => onClick()}
+                  ></i>
+                </>
+              ) : (
+                <i
+                  className="fa-solid fa-circle-user mx-2 "
+                  role="button"
+                  onClick={() => navigate("/login")}
+                ></i>
+              )}
+            </form>
             {/* <form className="d-flex" role="search">
               <input
                 className="form-control me-2"

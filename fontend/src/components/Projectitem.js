@@ -40,17 +40,19 @@ const ProjectItem = (props) => {
               <b>Last edited by: </b>
               {project.alteredby}
             </li>
-            <li className="list-group-item d-flex justify-content-evenly">
-              <Link
-                className="btn btn-outline-secondary"
-                to={{
-                  pathname: "/updateproject",
-                }}
-                state={{ project: project }}
-              >
-                Edit
-              </Link>
-            </li>
+            {localStorage.getItem("token") && (
+              <li className="list-group-item d-flex justify-content-evenly">
+                <Link
+                  className="btn btn-outline-secondary"
+                  to={{
+                    pathname: "/updateproject",
+                  }}
+                  state={{ project: project }}
+                >
+                  Edit
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
