@@ -6,10 +6,10 @@ const ProjectSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-
   pname: {
     type: String,
     required: true,
+    unique: true,
   },
   description: {
     type: String,
@@ -29,9 +29,16 @@ const ProjectSchema = new Schema({
   alteredby: {
     type: String,
   },
+  show: {
+    type: Boolean,
+  },
   date: {
     type: Date,
     default: Date.now,
+  },
+  // Image
+  images: {
+    type: Array,
   },
 });
 

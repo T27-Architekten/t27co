@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules
+frontend/src/assets/uploads
 /.pnp
 .pnp.js
 
