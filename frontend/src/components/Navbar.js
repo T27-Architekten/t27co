@@ -1,104 +1,136 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./scss and css/Navbar.scss";
 
 export const Navbar = (props) => {
-  let location = useLocation();
-  let navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [click, setClick] = useState(false);
 
-  const onClick = () => {
-    localStorage.clear();
-    navigate("/login");
-    props.showAlert("Logout successfully", "success");
+  // Hide navbar on homepage.
+  const viewNav = () => {
+    if (location.pathname === "/") {
+      return false;
+    } else {
+      return true;
+    }
   };
+
+  // const onClick = () => {
+  //   localStorage.clear();
+  //   navigate("/login");
+  //   props.showAlert("Logout successfully", "success");
+  // };
+  const handleClick = (e) => {
+    e.preventDefault();
+    // e.stopPropagation();
+    setClick(!click);
+  };
+  const handleToggle = () => {
+    setClick(!click);
+  };
+
+  // console.log(location.pathname);
   return (
     // <div className={window.location.pathname === "/" ? "invisible" : "visible"}>
-    <div className="sticky-top">
-      <nav className="navbar navbar-expand-lg bg-body-tertiary ">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            T27
+    viewNav() && (
+      // <div className="sticky-top">
+      // <nav className="navbar navbar-expand-lg bg-body-tertiary ">
+      <nav className="navbar ">
+        {/* <Link className="navbar-brand" to="/">
+          T27
+        </Link> */}
+        <div className="logo">
+          <Link className="brand-title" to="/">
+            <img className="logo_img" src={"/static/logo.png"} alt="T27"></img>
+            <span className="logo-name">T27 Architekten</span>&nbsp;
+            {/* <span className="green"> Sharma</span> */}
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigate"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${
-                    location.pathname === "/projects" ? "active" : null
-                  }`}
-                  aria-current="page"
-                  to="/projects"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${
-                    location.pathname === "/contactus" ? "active" : null
-                  }`}
-                  to="/contactus"
-                >
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-            <form className="d-flex" role="search">
-              {localStorage.getItem("token") ? (
-                <>
-                  {/* <i
-                    className="fa-solid fa-file-circle-plus mx-2"
-                    role="button"
-                    
-                  ></i>
-                  <i
-                    className="fa-solid fa-user-plus mx-2 "
-                    role="button"
-                    
-                  ></i> */}
-                  <i
-                    className="fa-solid fa-circle-user mx-2 "
-                    role="button"
-                    onClick={() => navigate("/user")}
-                  ></i>
-                  <i
-                    className="fa-solid fa-right-from-bracket mx-2"
-                    role="button"
-                    onClick={() => onClick()}
-                  ></i>
-                </>
-              ) : (
+        </div>
+        <i
+          className="fa-solid fa-bars fa-xl toggle-bars"
+          onClick={handleClick}
+        ></i>
+        <div className={`navbar-links ${click && "active"}`}>
+          <ul>
+            <li className="nav-link">
+              {/* <a href="/">Home</a> */}
+              <Link
+                className={location.pathname === "/" ? "active" : undefined}
+                to="/"
+                onClick={handleToggle}
+              >
+                Home
+              </Link>
+            </li>
+            <li className="nav-link">
+              {/* <a href="/images">Images</a> */}
+              <Link
+                className={
+                  location.pathname === "/projects" ? "active" : undefined
+                }
+                to="/projects"
+                onClick={handleToggle}
+              >
+                Projects
+              </Link>
+            </li>
+            <li className="nav-link">
+              {/* <a href="/posts">Posts</a> */}
+              <Link
+                className={
+                  location.pathname === "/contactus" ? "active" : undefined
+                }
+                to="/contactus"
+                onClick={handleToggle}
+              >
+                Contact Us
+              </Link>
+            </li>
+            {/* <li className="nav-link">
+
+              <Link
+                className={
+                  location.pathname === "/timeline" ? "active" : undefined
+                }
+                to="/timeline"
+                onClick={handleToggle}
+              >
+                Timeline
+              </Link>
+            </li> */}
+            <li className="nav-link">
+              <i
+                className="fa-solid fa-circle-user fa-2xl login-icon"
+                role="button"
+                onClick={() => {
+                  localStorage.getItem("token")
+                    ? navigate("/user")
+                    : navigate("/login");
+                  handleToggle();
+                }}
+              ></i>
+            </li>
+            {localStorage.getItem("token") && (
+              <li className="nav-link">
                 <i
-                  className="fa-solid fa-circle-user mx-2 "
+                  className="fa-solid fa-right-from-bracket fa-2xl login-icon"
                   role="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => {
+                    props.setProgress(0);
+                    localStorage.removeItem("token");
+                    props.setProgress(50);
+                    navigate("/login");
+                    props.setProgress(100);
+                    handleToggle();
+                  }}
                 ></i>
-              )}
-            </form>
-            {/* <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form> */}
-          </div>
+              </li>
+            )}
+          </ul>
         </div>
       </nav>
-    </div>
+      // </div>
+    )
   );
 };

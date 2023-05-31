@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import projectContext from "../../context/projects/projectContext";
 
 const Addproject = (props) => {
-  const host_env = process.env.REACT_APP_HOST;
   const context = useContext(projectContext);
   const { addProject, checkproject } = context;
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ const Addproject = (props) => {
       }
       formData.append("images", images[x]);
     }
-    console.log(formData.getAll("images"));
+    console.log(formData.getAll("images"), 71);
     if (await handleCheck(e, true)) {
       addProject(formData);
     }
@@ -88,7 +87,6 @@ const Addproject = (props) => {
   };
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
-    // console.log(document.getElementById("images"));
   };
 
   return (
@@ -177,31 +175,8 @@ const Addproject = (props) => {
             Year
           </label>
         </div>
-        {/* <div className="form-floating mb-3">
-          <input
-            placeholder={"Year of initiation"}
-            type="number"
-            minLength="3"
-            className="form-control"
-            id="year"
-            name="year"
-            onChange={onChange}
-            value={project.year}
-          />
-          <label htmlFor="year" className="form-label">
-            Year
-          </label>
-        </div> */}
+
         <div className="form-floating mb-3">
-          {/* <input
-            placeholder={"Category"}
-            type="text"
-            className="form-control"
-            id="category"
-            name="category"
-            onChange={onChange}
-            value={project.category}
-          /> */}
           <select
             className="form-select"
             aria-label="Default select"
@@ -223,15 +198,6 @@ const Addproject = (props) => {
           </label>
         </div>
         <div className="form-floating mb-3">
-          {/* <input
-            placeholder={"Progress"}
-            type="text"
-            className="form-control"
-            id="inprogress"
-            name="inprogress"
-            onChange={onChange}
-            value={project.inprogress}
-          /> */}
           <select
             className="form-select"
             aria-label="Default select"

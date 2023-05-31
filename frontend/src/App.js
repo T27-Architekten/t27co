@@ -17,6 +17,7 @@ import User from "./components/Admin/User";
 // Contexts
 import ProjectState from "./context/projects/ProjectState";
 import AuthState from "./context/auth/AuthState";
+import Projectitem from "./components/Projectitem";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -40,7 +41,7 @@ function App() {
         <AuthState setProgress={setProgress} showAlert={showAlert}>
           <Router>
             <LoadingBar height={2.5} color="#ffc107" progress={progress} />
-            <Navbar showAlert={showAlert} />
+            <Navbar showAlert={showAlert} setProgress={setProgress} />
             <Alert alert={alert} />
             <Routes>
               <Route exact path="/" element={<Home />} />
@@ -63,6 +64,16 @@ function App() {
                 path="/addproject"
                 element={
                   <Addproject showAlert={showAlert} setProgress={setProgress} />
+                }
+              />
+              <Route
+                exact
+                path="/projectitem"
+                element={
+                  <Projectitem
+                    showAlert={showAlert}
+                    setProgress={setProgress}
+                  />
                 }
               />
               <Route

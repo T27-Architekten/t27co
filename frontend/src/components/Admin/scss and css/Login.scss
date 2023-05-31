@@ -1,0 +1,180 @@
+// https://codepen.io/marcobiedermann/pen/nbpKWV
+
+$main-color: #f7c0a2;
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // background-color: #f7c0a2;
+  background-color: #a37d54;
+  // background-color: #2c3337;
+  height: 100vh;
+}
+
+// .hidden {
+//   border: 0;
+//   clip: rect(0 0 0 0);
+//   height: 1px;
+//   margin: -1px;
+//   overflow: hidden;
+//   padding: 0;
+//   position: absolute;
+//   width: 1px;
+// }
+
+.login-info {
+  background-color: #212121;
+  z-index: 4;
+  height: 400px;
+  width: 1100px;
+  border-radius: 0.25rem;
+  justify-content: center;
+  color: #d2d2d2;
+  padding: 50px;
+  flex-direction: column;
+  text-align: left;
+  // align-items: center;
+  display: flex;
+  right: 10%;
+  position: absolute;
+  overflow: hidden;
+  animation: move-left 1.2s ease-in-out;
+}
+
+@keyframes move-left {
+  0% {
+    // transform: translateX(30%);
+    right: 0%;
+  }
+
+  100% {
+    right: 10%;
+    // transform: translateX(0%);
+    // transform: scale(1);
+  }
+}
+
+.login-details {
+  background-color: #dcb489;
+  width: 450px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 500px;
+  border-radius: 0.25rem;
+  right: 20%;
+  position: absolute;
+  z-index: 5;
+  animation: zoom-in 1s ease-in-out;
+}
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.login-form {
+  display: grid;
+  gap: 0.875rem;
+  width: 22rem;
+  color: #eee;
+
+  input {
+    background-image: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    transition: background-color 0.3s;
+  }
+
+  input[type="submit"] {
+    cursor: pointer;
+  }
+
+  input[type="password"],
+  input[type="text"],
+  input[type="submit"] {
+    inline-size: 100%;
+  }
+
+  .login-label,
+  .login-pwd-view,
+  input[type="text"],
+  input[type="password"],
+  input[type="submit"] {
+    border-radius: 0.25rem;
+    padding: 1rem;
+    padding-inline: 1.25rem;
+    background-color: #3e3e3e;
+  }
+
+  .login-label {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .login-pwd-view {
+    // background-color: #363b41;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    cursor: pointer;
+  }
+
+  // .login-pwd-view:hover {
+  //   background-color: #4f4f4f;
+  // }
+
+  input[type="password"],
+  input[type="text"] {
+    background-color: #454545;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+  input[type="password"] {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .login-pwd-view:hover,
+  input[type="password"]:focus,
+  input[type="password"]:hover,
+  input[type="text"]:focus,
+  input[type="text"]:hover {
+    background-color: #4f4f4f;
+  }
+
+  input[type="submit"] {
+    background-color: #3b4148;
+    color: #eeeeee;
+    font-weight: 900;
+    font-size: medium;
+    text-transform: uppercase;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3a322c;
+  }
+
+  input[type="submit"]:focus,
+  input[type="submit"]:hover {
+    background-color: #4f4f4f;
+  }
+}
+
+.form__field {
+  display: flex;
+  height: 55px;
+}
+
+.form__input {
+  flex: 1;
+}

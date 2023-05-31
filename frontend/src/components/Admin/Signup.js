@@ -28,6 +28,7 @@ const Signup = (props) => {
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+
   return (
     <div className="container col-md-4 mt-5 shadow p-3 mb-5 bg-body-tertiary rounded">
       <h2 className="d-flex justify-content-evenly">Add new user</h2>

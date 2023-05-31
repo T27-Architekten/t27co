@@ -1,15 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
+import "./scss and css/Login.scss";
 
 const Login = (props) => {
   const context = useContext(AuthContext);
   const { login } = context;
+
   // user useState is created for fetch body.
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const [viewPassword, setViewPassword] = useState(false);
   const navUrl = "/user";
   const navigate = useNavigate();
 
@@ -32,39 +35,92 @@ const Login = (props) => {
   };
 
   return (
-    <div className="container col-md-4 mt-5 shadow p-3 mb-5 bg-body-tertiary rounded">
-      <h2 className="d-flex justify-content-evenly ">Login</h2>
-      <form className="form-floating container my-3">
-        <div className="form-floating mb-3">
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            placeholder="name@example.com"
-            name="email"
-            onChange={onChange}
-          />
-          <label htmlFor="floatingInput">Email address</label>
-        </div>
-        <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            placeholder="Password"
-            onChange={onChange}
-            // https://stackoverflow.com/questions/54970352/input-elements-should-have-autocomplete-attributes
-            autoComplete="off"
-          />
-          <label htmlFor="floatingPassword">Password</label>
-        </div>
-        <div className="d-flex justify-content-evenly">
-          <button onClick={handleSubmit} className="btn btn-primary">
-            Login
-          </button>
-        </div>
-      </form>
+    <div className="login-container">
+      {/* <div className="grid"> */}
+      <div className="login-info">
+        <label>
+          <h1>Login</h1>
+        </label>
+        <br />
+        <p>Login to access your account. </p>
+      </div>
+      <div className="login-details">
+        <form
+          action="https://httpbin.org/post"
+          method="POST"
+          className=" login-form"
+        >
+          <div className="form__field">
+            <label className="login-label" htmlFor="login-username">
+              {/* <svg className="icon">
+              <use href="#icon-user"></use>
+            </svg> */}
+              <i className="fa-solid fa-user" style={{ color: " #606468" }}></i>
+              {/* <span className="hidden">Username</span> */}
+            </label>
+            <input
+              autoComplete="username"
+              id="login__username"
+              type="text"
+              name="email"
+              className="form__input"
+              placeholder="Email"
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <div className="form__field">
+            <label className="login-label" htmlFor="login__password">
+              {/* <svg className="icon">
+              <use href="#icon-lock"></use>
+            </svg> */}
+              <i className="fa-solid fa-lock" style={{ color: " #606468" }}></i>
+              {/* <span className="hidden">Password</span> */}
+            </label>
+            <input
+              id="login__password"
+              type={viewPassword ? "text" : "password"}
+              name="password"
+              className="form__input"
+              placeholder="Password"
+              onChange={onChange}
+              required
+            />
+            <label
+              htmlFor="login__password "
+              className="login-pwd-view"
+              onClick={() => setViewPassword(!viewPassword)}
+            >
+              <i class="fa-solid fa-eye" style={{ color: " #eee" }}></i>
+            </label>
+          </div>
+
+          <div className="form__field">
+            <input type="submit" onClick={handleSubmit} value="Login" />
+          </div>
+        </form>
+      </div>
+
+      {/* <p className="text--center">
+        Not a member? <a href="#">Sign up now</a>{" "}
+        <svg className="icon">
+          <use href="#icon-arrow-right"></use>
+        </svg>
+      </p> */}
+      {/* </div> */}
+
+      {/* <svg xmlns="http://www.w3.org/2000/svg" className="icons">
+        <symbol id="icon-arrow-right" viewBox="0 0 1792 1792">
+          <path d="M1600 960q0 54-37 91l-651 651q-39 37-91 37-51 0-90-37l-75-75q-38-38-38-91t38-91l293-293H245q-52 0-84.5-37.5T128 1024V896q0-53 32.5-90.5T245 768h704L656 474q-38-36-38-90t38-90l75-75q38-38 90-38 53 0 91 38l651 651q37 35 37 90z" />
+        </symbol>
+        <symbol id="icon-lock" viewBox="0 0 1792 1792">
+          <path d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z" />
+        </symbol>
+        <symbol id="icon-user" viewBox="0 0 1792 1792">
+          <path d="M1600 1405q0 120-73 189.5t-194 69.5H459q-121 0-194-69.5T192 1405q0-53 3.5-103.5t14-109T236 1084t43-97.5 62-81 85.5-53.5T538 832q9 0 42 21.5t74.5 48 108 48T896 971t133.5-21.5 108-48 74.5-48 42-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-320-893q0 159-112.5 271.5T896 896 624.5 783.5 512 512t112.5-271.5T896 128t271.5 112.5T1280 512z" />
+        </symbol>
+      </svg> */}
     </div>
   );
 };

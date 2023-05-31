@@ -1,2 +1,73 @@
+@use "./lib.scss" as lib_scss;
+
 .projectitem-container {
+  position: absolute;
+  padding: 70px 10%;
+
+  background-color: #2c3337;
+  flex-wrap: wrap;
+  display: flex;
+  //   justify-content: center;
+  flex-direction: row-reverse;
+  //   transition: all 0.5s ease-in-out;
+
+  .projectitem-details {
+    color: #d1b08f;
+    flex-direction: column;
+    // justify-content: center;
+    width: 50%;
+    display: flex;
+    // height: 100%;
+    padding-top: 5%;
+    padding-left: 10%;
+    /* align-items: center; */
+    text-align: left;
+    animation: movefromup 1s ease-in-out;
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  }
+
+  .projectitem-image {
+    max-width: 50%;
+    // transition: all 0.5s ease-in-out;
+    animation: movefromdown 1s ease-in-out;
+  }
+  img:nth-child(2) {
+    animation: movefromleft 1s ease-in-out;
+  }
+}
+
+@keyframes movefromup {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes movefromdown {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes movefromleft {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

@@ -1,9 +1,9 @@
-import { useState } from "react";
+// import { useState } from "react";
 import AuthContext from "./authContext";
 
 const AuthState = (props) => {
   const host_env = process.env.REACT_APP_HOST;
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
 
   // Login user
   const login = async ({ email, password }) => {

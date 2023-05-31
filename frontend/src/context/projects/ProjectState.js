@@ -14,14 +14,22 @@ const ProjectState = (props) => {
       method: "GET",
     });
     props.setProgress(30);
-    const json = await response.json();
+    let json = await response.json();
     props.setProgress(50);
     if (json) {
+      // Remove values which are restricted.
+      if (!localStorage.getItem("token")) {
+        json = json.filter((prjct) => {
+          return prjct.show === true;
+        });
+      }
       // Sort projects according to the year.
       json.sort((a, b) => b.year - a.year);
       props.setProgress(70);
       setProjects(json);
       props.setProgress(100);
+      // console.log(allprj);
+      return json;
     } else {
       console.log("Internal server error.");
       props.setProgress(100);
@@ -76,7 +84,7 @@ const ProjectState = (props) => {
     );
     props.setProgress(30);
     const json = await response.json();
-    console.log("The project is updated.");
+    console.log(json, "The project is updated.");
     props.setProgress(50);
     const newProject = projects.filter((project) => {
       return project._id !== id;
@@ -88,54 +96,52 @@ const ProjectState = (props) => {
 
   // ------------------------------------------------------------------- Edit an existing project. Authentication required.
   const editProject = async (
-    id,
-    pname,
-    description,
-    location,
-    year,
-    category,
-    inprogress,
-    show
+    // id,
+    // pname,
+    // description,
+    // location,
+    // year,
+    // category,
+    // inprogress,
+    // show
+    formData
   ) => {
+    // console.log(formData.values(), 113);
+    for (const value of formData.values()) {
+      console.log(value, 103);
+    }
+    console.log(formData.get("_id"), 105);
     props.setProgress(10);
     // Api Call
     const response = await fetch(
-      `${host_env}/api/projects/updateproject/${id}`,
+      `${host_env}/api/projects/updateproject/${formData.get("_id")}`,
       {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           "auth-token": localStorage.getItem("token"),
         },
-        body: JSON.stringify({
-          pname,
-          description,
-          location,
-          year,
-          category,
-          inprogress,
-          show,
-        }),
+        body: formData,
       }
     );
+
     props.setProgress(30);
     const json = await response.json();
-    console.log("Project Updated.");
+    console.log(json, "Project Updated.");
     props.setProgress(50);
     let newProjects = JSON.parse(JSON.stringify(projects));
     // Logic to edit in client
-    for (let index = 0; index < projects.length; index++) {
-      const element = newProjects[index];
-      if (element._id === id) {
-        newProjects[index].pname = pname;
-        newProjects[index].description = description;
-        newProjects[index].location = location;
-        newProjects[index].year = year;
-        newProjects[index].category = category;
-        newProjects[index].inprogress = inprogress;
-        break;
-      }
-    }
+    // for (let index = 0; index < projects.length; index++) {
+    //   const element = newProjects[index];
+    //   if (element._id === id) {
+    //     newProjects[index].pname = pname;
+    //     newProjects[index].description = description;
+    //     newProjects[index].location = location;
+    //     newProjects[index].year = year;
+    //     newProjects[index].category = category;
+    //     newProjects[index].inprogress = inprogress;
+    //     break;
+    //   }
+    // }
     props.setProgress(70);
     setProjects(newProjects);
     props.setProgress(100);
