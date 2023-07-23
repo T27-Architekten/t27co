@@ -9,6 +9,7 @@ const Signup = (props) => {
     name: "",
     email: "",
     password: "",
+    cpassword: "",
     role: "",
   });
   const navigate = useNavigate();
@@ -22,7 +23,41 @@ const Signup = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser(user);
+
+    // Validate email
+    const emailRegex =
+      /^[a-zA-Z0-9\.\_\%\+\- ]+@(?:[a-zA-Z0-9\.\-\_\!]+\.)+[A-Za-z]{2,4}$/; // eslint-disable-line
+    const passwordRegex = /^(?=.*[.@-])(?=.*\d)(?=[^A-Z]*[A-Z])\S{8,}$/;
+
+    // Conditional validations.
+    if (
+      user.name === "" ||
+      user.password === "" ||
+      user.cpassword === "" ||
+      user.email === "" ||
+      user.role === ""
+    ) {
+      props.showAlert("Fill all the required fields.");
+    } else if (!emailRegex.test(user.email)) {
+      props.showAlert(
+        "Please enter a valid email address. (Example: example@mail.com)"
+      );
+    } else if (!passwordRegex.test(user.password)) {
+      // Validate password
+      props.showAlert(
+        "A valid password should ensure the following parameters,\n" +
+          "1. Must contain atleast one lowercase character.\n" +
+          "2. Must contain atleast one uppercase character.\n" +
+          "3. Must contain atleast one ., - or @ character.\n" +
+          "4. The password must have a minimum of 8 characters.",
+        undefined,
+        3000
+      );
+    } else if (user.password === user.cpassword) {
+      props.showAlert("Password and confirm password do not match.");
+    } else {
+      createUser(user);
+    }
   };
 
   const onChange = (e) => {
@@ -94,8 +129,8 @@ const Signup = (props) => {
             <option value="Manager">Manager</option>
             <option value="Admin">Admin</option>
           </select>
-          <label htmlFor="category" className="form-label">
-            Category
+          <label htmlFor="role" className="form-label">
+            Role
           </label>
         </div>
         <div className="d-flex justify-content-evenly">

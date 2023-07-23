@@ -69,7 +69,7 @@ const AuthState = (props) => {
         props.setProgress(70);
         if (json.success) {
           // Save the auth token and redirect
-          localStorage.setItem("token", json.authtoken);
+          // localStorage.setItem("token", json.authtoken);
           props.showAlert(
             "Thanks for signing up with us " + json.user.name + ".",
             "success"

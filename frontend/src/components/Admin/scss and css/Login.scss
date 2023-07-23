@@ -1,5 +1,6 @@
 // https://codepen.io/marcobiedermann/pen/nbpKWV
-
+@use "./../../scss\ and\ css/lib.scss"as lib-scss;
+@use "./../../scss\ and\ css/lib.scss";
 $main-color: #f7c0a2;
 
 .login-container {
@@ -25,7 +26,8 @@ $main-color: #f7c0a2;
 // }
 
 .login-info {
-  background-color: #212121;
+  background-color: lib-scss.$backgrnd-clr;
+  // background-color: #212121;
   z-index: 4;
   height: 400px;
   width: 1100px;
@@ -97,13 +99,13 @@ $main-color: #f7c0a2;
     transition: background-color 0.3s;
   }
 
-  input[type="submit"] {
+  input[type="button"] {
     cursor: pointer;
   }
 
   input[type="password"],
   input[type="text"],
-  input[type="submit"] {
+  input[type="button"] {
     inline-size: 100%;
   }
 
@@ -111,11 +113,12 @@ $main-color: #f7c0a2;
   .login-pwd-view,
   input[type="text"],
   input[type="password"],
-  input[type="submit"] {
+  input[type="button"] {
     border-radius: 0.25rem;
     padding: 1rem;
     padding-inline: 1.25rem;
-    background-color: #3e3e3e;
+    background-color: lib-scss.$backgrnd-clr;
+    // background-color: #3e3e3e;
   }
 
   .login-label {
@@ -136,7 +139,6 @@ $main-color: #f7c0a2;
 
   input[type="password"],
   input[type="text"] {
-    background-color: #454545;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
   }
@@ -153,20 +155,37 @@ $main-color: #f7c0a2;
     background-color: #4f4f4f;
   }
 
-  input[type="submit"] {
-    background-color: #3b4148;
+  .login-eye:active {
+    color: " #eee";
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px inset,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px inset;
+  }
+  // .login-eye:hover {
+  // }
+
+  input[type="button"] {
+    background-color: lib-scss.$backgrnd-clr;
+    @extend .t27-button;
     color: #eeeeee;
+    width: 165px;
+    // margin: 0 6px 0;
     font-weight: 900;
     font-size: medium;
     text-transform: uppercase;
     border-style: solid;
-    border-width: 1px;
+    // border-width: 1px;
     border-color: #3a322c;
   }
 
-  input[type="submit"]:focus,
-  input[type="submit"]:hover {
-    background-color: #4f4f4f;
+  .button__field {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  input[type="button"]:focus,
+  input[type="button"]:hover {
+    background-color: lib-scss.$backgrnd-clr-trans;
+    // background-color: #4f4f4f;
   }
 }
 

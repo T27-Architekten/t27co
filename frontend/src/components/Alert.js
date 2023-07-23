@@ -9,12 +9,16 @@ export default function Alert(props) {
         style={{
           position: "fixed",
           zIndex: "10000",
-          right: "0",
+          right: "3%",
           width: "30%",
           top: "10%",
+          backgroundColor: "#d1b08f",
+          borderColor: "#2c3337",
+          color: "#2c3337",
+          fontWeight: 600,
         }}
       >
-        {props.alert.msg}
+        <p>{props.alert.msg}</p>
       </div>
     )
   );

@@ -1,20 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import projectContext from "../context/projects/projectContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./scss and css/Projectitem.scss";
 
 const Projectitem = (props) => {
-  const context = useContext(projectContext);
-  const { projects, getProjects } = context;
-  const { state } = useLocation();
-  const { projectNumber } = state;
-  useEffect(() => {
-    const getpjts = async () => await getProjects();
-    getpjts();
-    // eslint-disable-next-line
-  }, []);
-
-  // const handleimage = () => {};
+  const navigate = useNavigate();
+  const project = JSON.parse(localStorage.getItem("project-edit"));
+  console.log(project);
 
   const handlecategory = (category) => {
     if (category === "Residential") {
@@ -26,22 +17,34 @@ const Projectitem = (props) => {
     }
   };
 
-  console.log(projects[projectNumber]);
-  console.log(projectNumber, 7);
-  console.log(Array.isArray(projects[projectNumber]?.images));
   return (
     <div className="projectitem-container">
       <div className="projectitem-details">
-        <h1>{projects[projectNumber]?.pname}</h1>
+        <div>
+          <input
+            type="button"
+            className="projectitem-button"
+            value="Go back"
+            onClick={() => navigate("/projects")}
+          />
+          {localStorage.getItem("token") && (
+            <input
+              type="button"
+              className="projectitem-button"
+              value="Edit"
+              onClick={() => navigate("/updateproject")}
+            />
+          )}
+        </div>
+        <h1>{project.pname}</h1>
         <ul>
           <li>
-            It is {handlecategory(projects[projectNumber]?.category)} project
-            initiated in {projects[projectNumber]?.year} and it is{" "}
-            {projects[projectNumber]?.inprogress}. It is situated in{" "}
-            {projects[projectNumber]?.location}.
+            It is {handlecategory(project.category)} project initiated in{" "}
+            {project.year} and it is {project.inprogress}. It is situated in{" "}
+            {project.location}.
           </li>
           {/* <li>Category </li> */}
-          <li>{projects[projectNumber]?.description} </li>
+          <li>{project.description} </li>
           {/* <li>Inprogress </li> */}
           {/* <li>Location </li> */}
           {/* <li>Show </li> */}
@@ -49,25 +52,55 @@ const Projectitem = (props) => {
         </ul>
       </div>
 
-      {Array.isArray(projects[projectNumber]?.images) ? (
-        projects[projectNumber]?.images.map((image, index) => {
+      {Array.isArray(project.images) ? (
+        project.images.map((image, index) => {
           return (
-            <img
-              className="projectitem-image"
-              src={`/static/uploads/projects/${image}`}
-              alt="Project-image"
-              key={index}
-            />
+            <picture
+              className={
+                (index === 0 && "first-picture") + " projectitem-picture"
+              }
+              key={`picture-${image}`}
+            >
+              <source
+                type="image/avif"
+                srcSet={`${image}?width=100 100vw,
+                ${image}?width=200 200vw,
+                ${image}?width=400 400vw,
+                ${image}?width=800 800vw,`}
+              />
+              <source
+                type="image/webp"
+                srcSet={`${image}?width=100 100vw,
+                ${image}?width=200 200vw,
+                ${image}?width=400 400vw,
+                ${image}?width=800 800vw,`}
+              />
+              <img
+                className="projectitem-image"
+                src={`/static/uploads/projects/${image}`}
+                alt={image}
+                key={index}
+                loading="lazy"
+                role="presentation"
+                srcSet={`${image}?width=100 100vw,
+                ${image}?width=200 200vw,
+                ${image}?width=400 400vw,
+                ${image}?width=800 800vw,`}
+                sizes="(max-width:800px) 100vw, 50vw"
+                // decoding="async"
+                fetchpriority="high"
+              />
+            </picture>
           );
         })
       ) : (
         <img
           className="projectitem-image"
-          src={`/static/uploads/projects/${projects[projectNumber]?.images}`}
-          alt="Project-image"
+          src={`/static/uploads/projects/${project.images}`}
+          alt=""
         />
       )}
-      {/* {projects[projectNumber]?.images.map((image, index) => {
+      {/* {project.images.map((image, index) => {
         <img src={`'${image}'`} alt="Project-image" />;
       })} */}
     </div>

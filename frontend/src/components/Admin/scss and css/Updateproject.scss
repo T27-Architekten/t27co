@@ -1,0 +1,190 @@
+@use "../../scss\ and\ css/lib.scss"as lib-scss;
+@use "../../scss\ and\ css/lib.scss";
+
+.updateproject-container {
+  @extend .t27-container;
+  color: white;
+  justify-content: space-evenly;
+
+  .udpate-images {
+    padding-top: 20px;
+    left: 0;
+    width: 50%;
+    text-align: left;
+
+    .udpate-heading {
+      display: flex;
+      align-items: center;
+
+      .update-go-back {
+        @extend .t27-button;
+        @extend .move-left-anim;
+        // @extend .move-from-up-anim;
+        padding: 6px 17px;
+        width: 100px;
+        margin: 30px 30px 20px 20px;
+        width: 120px;
+      }
+      // padding: 0 0 5px 20px;
+
+      h1 {
+        margin: 30px 30px 20px 0;
+        display: inline;
+        text-shadow: rgba(144, 144, 144, 0.911) 1.95px 1.05px 15px,
+          rgba(197, 197, 197, 0.27) -1.95px -1.05px 15px;
+        // animation: fade-in 1s ease-in;
+        @extend .fade-in-anim;
+      }
+    }
+
+    .update-all-images {
+      padding: 30px;
+      padding-top: 20px;
+      margin: 15px;
+      margin-top: 3%;
+      // width: 40%;
+      text-align: center;
+      // height: auto;
+      background-color: lib-scss.$tan-color;
+      color: lib-scss.$backgrnd-clr;
+      border-radius: 0.5rem;
+      border: lib-scss.$backgrnd-clr-trans solid 0;
+      box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+        rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+      @extend .move-left-anim;
+
+      .group-images {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .project-images {
+        border-radius: 0.5rem;
+        margin: 15px 0 15px 0;
+        max-width: 95%;
+        // overflow: hidden;
+        transition: all 0.2s ease-in-out;
+
+        // height: 300px;
+        img {
+          border-radius: 0.5rem;
+          margin: 5%;
+          max-width: 90%;
+          // width: 200px;
+          transition: all 0.5s ease-in-out;
+          // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+          //   rgba(0, 0, 0, 0.605) -1.95px -3.05px 5px;
+          box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 25px,
+            rgba(0, 0, 0, 0.605) -1.95px -3.05px 25px;
+          // &:hover {
+          //   box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 25px,
+          //     rgba(0, 0, 0, 0.605) -1.95px -3.05px 25px;
+          // }
+        }
+        i {
+          // top: 17%;
+
+          position: relative;
+          color: lib-scss.$white-color;
+          // margin-bottom: 5%;
+
+          font-size: large;
+          transition: all 0.2s ease-in-out;
+        }
+        .fa-trash-can:hover {
+          // text-shadow: rgb(255, 255, 255) 0px 0px 15px;
+        }
+      }
+      .div-image {
+        background-color: lib-scss.$backgrnd-clr-trans;
+        // box-shadow: #d1b08f9e 2px 3px 5px inset;
+        // box-shadow: rgba(255, 255, 255, 0.665) 1.95px 0px 2.6px inset;
+      }
+
+      .div-icon {
+        background-color: lib-scss.$backgrnd-clr-trans;
+        padding: 20px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        cursor: pointer;
+        &:hover > i {
+          text-shadow: rgb(255, 255, 255) 0px 0px 15px;
+        }
+      }
+    }
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+
+  .udpate-details {
+    padding: 50px;
+    padding-top: 20px;
+    margin: 15px;
+    margin-top: 3%;
+    // width: 40%;
+    text-align: center;
+    // height: auto;
+    background-color: lib-scss.$tan-color;
+    color: lib-scss.$backgrnd-clr;
+    border-radius: 0.5rem;
+    border: lib-scss.$backgrnd-clr-trans solid 0;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+      rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+    @extend .move-right-anim;
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 10px;
+      label {
+        font-weight: 700;
+        font-size: large;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        @extend .t27-input-text;
+      }
+
+      select {
+        border-width: 10px;
+        border-color: lib-scss.$backgrnd-clr;
+        padding: 0;
+        // appearance: none;
+        // -webkit-appearance: none;
+        // -moz-appearance: none;
+        // -ms-appearance: none;
+        // color: #d2d2d2;
+        &:focus,
+        &:hover {
+          border-color: #4f4f4f;
+        }
+      }
+    }
+
+    .update-buttons {
+      display: flex;
+      justify-content: space-between;
+      .update-button {
+        @extend .t27-button;
+        font-weight: 900;
+        padding: 10px;
+      }
+    }
+  }
+}

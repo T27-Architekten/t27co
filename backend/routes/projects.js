@@ -2,7 +2,8 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const fetchuser = require("../middleware/fetchuser");
-const uploads = require("../middleware/imageupload");
+const { uploads, deleteImage } = require("../middleware/images");
+// const deleteimage = require("../middleware/images");
 const Project = require("../models/Projects");
 const User = require("../models/Users");
 
@@ -15,7 +16,8 @@ const User = require("../models/Users");
 router.get("/fetchallprojects", async (req, res) => {
   try {
     const projects = await Project.find();
-    res.json(projects);
+    // console.log(projects);
+    res.send(projects);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ Error: "Internal server error." });
@@ -42,13 +44,15 @@ router.post(
     try {
       const { pname, description, location, year, category, inprogress } =
         req.body;
+      // console.log(req.body);
 
       // If user doesn't upload any image.
       let images = [];
       // console.log(req.files[0].path);
       if (req.files.length > 0) {
         for (i = 0; i < req.files.length; i++) {
-          images.push(req.files[i].path);
+          // images.push(req.files[i].path);
+          images.push(req.files[i].filename);
         }
       }
 
@@ -61,10 +65,10 @@ router.post(
       }
       // Get the name of the user for variable alteredby.
       const userId = req.user.id;
-      const user = await User.findById(userId).select("-password");
-      if (!user) {
-        return res.status(400).json({ Error: "Please login first." });
-      }
+      // const user = await User.findById(userId).select("-password");
+      // if (!user) {
+      //   return res.status(400).json({ Error: "Please login first." });
+      // }
       // Variable will take values and store them in the 'project' table.
       const project = new Project({
         pname,
@@ -73,7 +77,7 @@ router.post(
         year,
         category,
         inprogress,
-        user: user.id,
+        user: userId,
         show: false,
         alteredby: "Not Yet",
         images: images,
@@ -81,7 +85,9 @@ router.post(
 
       // Data is sent to the db.
       const saveProject = await project.save();
-      res.json({ Success: "The new project is saved.", Project: saveProject });
+      res
+        .status(200)
+        .json({ Success: "The new project is saved.", Project: saveProject });
       console.log(pname + " project is saved.", 111);
     } catch (error) {
       console.error(error.message);
@@ -91,15 +97,35 @@ router.post(
 );
 
 // ROUTE 3: Edit an existing project : PUT "/api/projects/updateproject". Login required.
-router.put("/updateproject/:id", fetchuser, async (req, res) => {
+router.put("/updateproject", fetchuser, async (req, res) => {
   try {
-    const { pname, description, location, year, category, inprogress, show } =
-      req.body;
+    let success = false;
+    const {
+      _id,
+      pname,
+      description,
+      location,
+      year,
+      category,
+      inprogress,
+      show,
+    } = req.body;
+    console.log(111, req.body);
+    // console.log(112, pname);
+    let images = [];
+    // console.log(req.files[0].path);
+    // if (req.files.length > 0) {
+    //   for (i = 0; i < req.files.length; i++) {
+    //     // images.push(req.files[i].path);
+    //     images.push(req.files[i].filename);
+    //   }
+    // }
+
     // get name of the user for the variable alteredby.
     const userId = req.user.id;
     const user = await User.findById(userId).select("-password");
     if (!user) {
-      return res.status(400).json({ Error: "Please login first." });
+      return res.status(400).json({ success, Error: "Please login first." });
     }
 
     // Get data from the user and store it in newProject object.
@@ -127,12 +153,13 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
     }
     newProject.alteredby = user.name;
 
+    console.log(_id);
     // Find the project and update it. ----
-    let project = await Project.findById(req.params.id);
+    let project = await Project.findById(_id);
 
     // If the project is not found.
     if (!project) {
-      return res.status(404).send("Project not found");
+      return res.status(404).json({ success, Error: "Project not found" });
     }
 
     project = await Project.findByIdAndUpdate(
@@ -140,18 +167,21 @@ router.put("/updateproject/:id", fetchuser, async (req, res) => {
       { $set: newProject },
       { new: true }
     );
-    res.json(project);
+    success = true;
+    res.json(project, success);
   } catch (error) {
+    success = false;
     console.error(error.message);
-    res.status(500).json({ Error: "Internal server error." });
+    res.status(500).json({ Error: "Internal server error.", success });
   }
 });
 
 // ROUTE 4: Delete an existing project : DELETE "/api/projects/deleteproject". Login required.
-router.delete("/deleteproject/:id", fetchuser, async (req, res) => {
+router.delete("/deleteproject", fetchuser, async (req, res) => {
   try {
+    const { id } = req.body;
     // Find the project if it is there.
-    let project = await Project.findById(req.params.id);
+    let project = await Project.findById({ _id: id });
     if (!project) {
       return res.status(404).send({ Unsuccessfull: "Project not found." });
     }
@@ -162,7 +192,7 @@ router.delete("/deleteproject/:id", fetchuser, async (req, res) => {
     // }
 
     // Find and delete the project.
-    project = await Project.findByIdAndDelete(req.params.id);
+    project = await Project.findByIdAndDelete({ _id: id });
     res.json({ Success: "The project has been deleted." });
   } catch (error) {
     console.error(error.message);
@@ -186,6 +216,38 @@ router.post("/fetchproject", fetchuser, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ Error: "Internal server error." });
+  }
+});
+
+// ROUTE 5: Delete image: POST "/api/projects/deleteimage". Login required.
+router.put("/deleteimage", fetchuser, deleteImage, async (req, res) => {
+  try {
+    let success = false;
+
+    // Get id and image from the body.
+    const { id, image } = req.body;
+    console.log(id + image, 226);
+    // Check the availability of the project.
+    let projectId = await Project.findById({ _id: id });
+    if (!projectId) {
+      return res.status(404).send({ Unsuccessfull: "Project not found." });
+    }
+
+    // Find and delete the image from the images array in the project.
+    let deleteImage = await Project.findByIdAndUpdate(
+      { _id: id },
+      { $pull: { images: image } }
+    );
+
+    // Respond if succussfully updated.
+    if (deleteImage) {
+      success = true;
+      res.json({ success, Deleted: "The project has been deleted." });
+    }
+  } catch (error) {
+    success = false;
+    console.error(error.message);
+    res.status(500).json({ success, Error: "Internal server error." });
   }
 });
 

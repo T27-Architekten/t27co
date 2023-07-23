@@ -1,9 +1,112 @@
-$pine_cone: #677467;
 $tan-color: #d1b08f;
+$backgrnd-clr: #2c3337;
+$backgrnd-clr-trans: #2c3337e2;
+$white-color: #eee;
 
+$pine_cone: #677467;
 $gum-leaf: #c1cdc1;
 $burly-wood: #ddb489;
 $cognac: #a53a22;
 $satin-linen: #e3e3d9;
 $deep-teal: #005069;
 $mirage: #121f2f;
+
+.t27-container {
+  position: absolute;
+  padding: 70px 10%;
+  display: flex;
+  width: 100%;
+}
+
+.t27-button {
+  background-color: $backgrnd-clr;
+  color: $tan-color;
+  border-radius: 0.5rem;
+  border: $backgrnd-clr-trans solid 0;
+  box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+    rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+  }
+
+  &:active {
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px inset,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px inset;
+  }
+}
+
+.t27-input-text {
+  border-radius: 0.25rem;
+  border-width: 0px;
+  width: 300px;
+  color: #d2d2d2;
+  font-weight: 600;
+  padding: 0.7rem;
+  padding-inline: 1.25rem;
+  background-color: $backgrnd-clr;
+  &:focus,
+  &:hover {
+    background-color: #4f4f4f;
+  }
+  input[type="text"] {
+    inline-size: 100%;
+  }
+}
+
+.fade-in-anim {
+  animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.move-left-anim {
+  animation: movefromleft 1s ease-in-out;
+}
+@keyframes movefromleft {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.move-right-anim {
+  animation: movefromright 1s ease-in-out;
+}
+
+@keyframes movefromright {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+.move-from-up-anim {
+  animation: movefromup 1s ease-in-out;
+}
+
+@keyframes movefromup {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

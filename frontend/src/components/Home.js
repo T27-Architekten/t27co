@@ -17,7 +17,7 @@ const Home = () => {
     >
       <div className="position-absolute top-50 start-0 translate-middle-y font-link grid text-center">
         <h1
-          className="mx-3 "
+          className="mx-3 home-animation"
           style={{
             fontWeight: "500",
             fontSize: "90px",
@@ -27,7 +27,7 @@ const Home = () => {
           T27 Architekten
         </h1>
         <button
-          className="btn btn-outline-dark "
+          className="btn btn-outline-dark  button-anim"
           onClick={() => navigate("/projects")}
         >
           Enter

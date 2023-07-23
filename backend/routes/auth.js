@@ -7,7 +7,7 @@ const JWTSec = process.env.REACT_APP_JWT_SECRET;
 const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
 
-// Create a User using: POST "/api/auth/createuser". No login required.
+// ROUTE 1: Create a User using: POST "/api/auth/createuser". No login required.
 router.post(
   "/createuser",
   [
@@ -15,11 +15,15 @@ router.post(
       min: 3,
     }),
     body("email", "Enter a valid email.").isEmail(),
-    body("password", "Name must consist of at least 5 characters.").isLength({
+    body(
+      "password",
+      "Password must consist of at least 5 characters."
+    ).isLength({
       min: 5,
     }),
   ],
   async (req, res) => {
+    // Variable for console.
     let success = false;
     // If the req.body values are not valid then it will return bad errors.
     const errors = validationResult(req);
@@ -72,7 +76,10 @@ router.post(
   "/login",
   [
     body("email", "Enter a valid email.").isEmail(),
-    body("password", "Password cannot be empty.").exists(),
+    // body("password", "Password cannot be empty.").exists(),
+    body("password", "Password cannot be empty.").isLength({
+      min: 3,
+    }),
   ],
   async (req, res) => {
     // If an error, it'll return a bad request and an error.

@@ -1,16 +1,31 @@
-import React, { useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import projectContext from "../../context/projects/projectContext";
+import "./scss and css/Updateproject.scss";
 
 const Updateproject = (props) => {
-  const projectP = useLocation().state.project;
-  const [project, setProject] = useState(projectP);
+  // const projectP = useLocation().state.project;
+  const [project, setProject] = useState(
+    JSON.parse(localStorage.getItem("project-edit"))
+  );
+  // let project = JSON.parse(localStorage.getItem("project-edit"));
+  // const [editedProject, setEditedProject] = useState(
+  //   JSON.parse(localStorage.getItem("project-edit"))
+  // );
   const context = useContext(projectContext);
-  const { editProject, deleteProject } = context;
+  const host_env = process.env.REACT_APP_HOST;
+  const { editProject } = context;
   const { showAlert } = props;
-  const [images, setImages] = useState(projectP.images);
-
+  const [images, setImages] = useState(project?.images);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("project-edit")) {
+      console.log("in useeffect update project", 21);
+      navigate("/projects");
+    } // eslint-disable-next-line
+  }, [project]);
+
   // console.log(images);
   const handleClick = (e) => {
     e.preventDefault();
@@ -25,7 +40,7 @@ const Updateproject = (props) => {
     //   project.inprogress,
     //   project.show
     // );
-
+    // console.log(editedProject);
     const formData = new FormData();
     formData.append("_id", project._id);
     formData.append("pname", project.pname);
@@ -52,12 +67,16 @@ const Updateproject = (props) => {
       }
     }
 
-    editProject(formData);
-    showAlert(
-      '"' + project.pname + '" project is successfully updated.',
-      "success"
-    );
-    navigate("/projects");
+    if (editProject(formData)) {
+      showAlert(
+        '"' + project.pname + '" project is successfully updated.',
+        "success"
+      );
+
+      // navigate("/projects");
+    } else {
+      showAlert("Error.", "danger");
+    }
   };
 
   // Year range for the project.
@@ -74,275 +93,197 @@ const Updateproject = (props) => {
 
   const onChange = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
+    // console.log(editedProject);
   };
 
-  const deleteImage = (image) => {
-    setImages(images.filter((img) => img != image));
+  // ---------------------------------------------------------------- Delete Image.
+  const deleteImage = async (projectId, image) => {
+    console.log(projectId, image);
+    props.setProgress(10);
+
+    const response = await fetch(`${host_env}/api/projects/deleteimage`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ id: projectId, image: image }),
+    });
+    try {
+      props.setProgress(60);
+      // Get data if there is.
+      const json = await response.json();
+
+      // If backend code worked well.
+      if (json.success) {
+        // Update image useState variable.
+        setImages(images.filter((img) => img !== image));
+
+        // Update project useState variable and localstorage. ---------
+        let updatedProjectWImgs = project;
+        updatedProjectWImgs.images = images.filter((img) => img !== image);
+        console.log(updatedProjectWImgs);
+        setProject(updatedProjectWImgs);
+        localStorage.setItem(
+          "project-edit",
+          JSON.stringify(updatedProjectWImgs)
+        );
+        // -------------------------------------------
+
+        console.log("Image deleted.", 96);
+        props.setProgress(100);
+        // return json.success;
+      }
+    } catch (error) {
+      props.setProgress(100);
+      console.log({ Error: error });
+      // return false;
+    }
+  };
+
+  const deleteImg = (image) => {
+    // setImages(images.filter((img) => img !== image));
   };
 
   return (
-    <>
-      {/* <!-- Delete Project Modal --> */}
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Delete project
-              </h1>
-              <button
+    localStorage.getItem("project-edit") && (
+      <>
+        <div className="updateproject-container">
+          {/* -------------------------------------------- All images */}
+          <div className="udpate-images">
+            <div className="udpate-heading">
+              <input
+                className="update-go-back"
                 type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                value="< Go Back"
+                onClick={() => navigate("/projectitem")}
+              />
+              <h1>Update Project</h1>
             </div>
-            <div className="modal-body">
-              Do you want delete the '{project.pname}' project permanentlty.
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => {
-                  deleteProject(project._id);
-                  showAlert(
-                    '"' + project.pname + '" note is successfully deleted.',
-                    "success"
-                  );
-                  navigate("/projects");
-                }}
-                data-bs-dismiss="modal"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* ----------------------------- */}
-      {/* Update project */}
-      <div className="container text-center mt-5">
-        {/* <div className="container col-md-5 mt-5  p-3 mb-5 "> */}
-        {/* <div className="my-5"> */}
-        <div className=" row justify-content-evenly">
-          <div className="col-5 mt-4">
-            <h2 className=" ">Update the project</h2>
-            <div className="container text-center mt-5">
-              <div className=" mb-3">
-                {/* --------------------- Images --------------------- */}
-                {images.length > 0
-                  ? images.map((image, key) => (
+            <div className="update-all-images">
+              {images?.length > 0
+                ? images.map((image, key) => (
+                    <div className="group-images" key={key}>
                       <div
-                        className="card w-50 col p-2"
-                        key={key}
-                        // style={{ width: "18rem" }}
+                        className="project-images div-image"
+                        key={key + "-image"}
                       >
-                        <img
-                          src={`/static/${image}`}
-                          className=" "
-                          alt="Alt image"
-                        />
-                        <div className="card-body">
-                          <i
-                            className="fa-solid fa-trash-can"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              deleteImage(image);
-                              // Show alert to press update button to make changes.
-                              showAlert(
-                                "Click update button to make changes permanent.",
-                                "warning"
-                              );
-                            }}
-                          />
-                        </div>
+                        <img src={`/static/uploads/projects/${image}`} alt="" />
                       </div>
-                    ))
-                  : "No images avaialable."}
-                <img className="col" src="" />
-                {/* <div class="col">col</div>
-                <div class="col">col</div>
-                <div class="col">col</div>
-                <div class="col">col</div> */}
-              </div>
+                      <div
+                        className="project-images div-icon"
+                        onClick={() => {
+                          props.showModal(
+                            "Delete Image",
+                            "Do you want to delete the image permanently? " +
+                              image,
+                            () => {
+                              deleteImage(project._id, image) &&
+                                deleteImg(image);
+                            },
+                            "Delete"
+                          );
+                        }}
+                      >
+                        <i className="fa-solid fa-trash-can" />
+                      </div>
+                    </div>
+                  ))
+                : "No images avaialable."}
             </div>
           </div>
-          <div className="col-4 mt-4">
-            <div className="form-floating mb-4 mt-2">
-              <select
-                className="form-select"
-                aria-label="Default select"
-                placeholder={"Show"}
-                id="show"
-                name="show"
-                onChange={onChange}
-                value={project.show}
-              >
-                <option value=""></option>
-                <option value={true}>Yes, visible to all.</option>
-                <option value={false}>No, visible only to company.</option>
-              </select>
-              <label htmlFor="show" className="form-label">
-                Show
-              </label>
-            </div>
-            <div className="form-floating mb-4">
-              <input
-                type="text"
-                className="form-control"
-                id="pname"
-                name="pname"
-                aria-describedby="emailHelp"
-                onChange={onChange}
-                placeholder="Project Name. It must be a minimum of at least 3 chararacters."
-                minLength="3"
-                value={project.pname}
-                required
-              />
-              <label htmlFor="pname" className="form-label">
-                Project name (minimum of at least 3 chararacters)
-              </label>
-            </div>
-            <div className="form-floating mb-4">
-              <textarea
-                type="text"
-                value={project.description}
-                className="form-control"
-                id="description"
-                name="description"
-                onChange={onChange}
-                placeholder="Description"
-                required
-              />
-              <label htmlFor="description" className="form-label">
-                Description
-              </label>
-            </div>
-            <div className="form-floating mb-4">
-              <input
-                placeholder={"Location. It must be a minimum of 3 characters."}
-                type="text"
-                minLength="3"
-                className="form-control"
-                id="location"
-                name="location"
-                onChange={onChange}
-                value={project.location}
-              />
-              <label htmlFor="location" className="form-label">
-                Location (Required)
-              </label>
-            </div>
-            <div className="form-floating mb-4">
-              <select
-                className="form-select"
-                aria-label="Default select"
-                placeholder={"Year"}
-                id="year"
-                name="year"
-                onChange={onChange}
-                value={project.year}
-              >
-                <option value=""></option>
-                {years.map((y, i) => (
-                  <option value={y} key={i}>
-                    {y}
+          {/* ------------------------------------------------------------------ */}
+
+          {/* ------------------------------------------------------- Update Details */}
+          <div className="udpate-details">
+            <h3>
+              <b>Details</b>
+            </h3>
+            <ul>
+              <li>
+                <label>Show</label>
+                {/* <input type="text" defaultValue={project.pname} /> */}
+                <select
+                  placeholder={"Show"}
+                  id="show"
+                  name="show"
+                  onChange={onChange}
+                  defaultValue={project?.show}
+                >
+                  <option value=""></option>
+                  <option value={true}>Yes, visible to all.</option>
+                  <option value={false}>No, visible only to company.</option>
+                </select>
+              </li>
+              <li>
+                <label>Project Name</label>
+                <input type="text" defaultValue={project.pname} />
+              </li>
+              <li>
+                <label>Description</label>
+                <textarea defaultValue={project.description} />
+              </li>
+              <li>
+                <label> Location (Required)</label>
+                <input type="text" defaultValue={project.location} />
+              </li>
+              <li>
+                <label>Year</label>
+                <select
+                  placeholder={"Year"}
+                  id="year"
+                  name="year"
+                  onChange={onChange}
+                  defaultValue={project.year}
+                >
+                  <option value=""></option>
+                  {years.map((y, i) => (
+                    <option value={y} key={i + "-year"}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+                {/* <input type="text" defaultValue={project.year} /> */}
+              </li>
+              <li>
+                <label>Category</label>
+                <select
+                  aria-label="Default select example"
+                  placeholder={"Category"}
+                  id="category"
+                  name="category"
+                  onChange={onChange}
+                  defaultValue={project.category}
+                >
+                  <option value=""></option>
+                  <option value="Residential">Residential</option>
+                  <option value="Commercial">Commercial</option>
+                  <option value="Residential and Commercial">
+                    Residential and Commercial
                   </option>
-                ))}
-              </select>
-              <label htmlFor="year" className="form-label">
-                Year
-              </label>
-            </div>
-            {/* <div className="form-floating mb-3">
-            <input
-              placeholder={"Year of initiation"}
-              type="number"
-              minLength="3"
-              className="form-control"
-              id="year"
-              name="year"
-              onChange={onChange}
-              value={project.year}
-            />
-            <label htmlFor="year" className="form-label">
-              Year (Required)
-            </label>
-          </div> */}
-            <div className="form-floating mb-4">
-              {/* <input
-              placeholder={"Category"}
-              type="text"
-              className="form-control"
-              id="category"
-              name="category"
-              onChange={onChange}
-              value={project.category}
-            /> */}
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                placeholder={"Category"}
-                id="category"
-                name="category"
-                onChange={onChange}
-                value={project.category}
-              >
-                <option value=""></option>
-                <option value="Residential">Residential</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Residential and Commercial">
-                  Residential and Commercial
-                </option>
-              </select>
-              <label htmlFor="category" className="form-label">
-                Category
-              </label>
-            </div>
-            <div className="form-floating mb-4">
-              {/* <input
-              placeholder={"Progress"}
-              type="text"
-              className="form-control"
-              id="inprogress"
-              name="inprogress"
-              onChange={onChange}
-              value={project.inprogress}
-            /> */}
-              <select
-                className="form-select"
-                aria-label="Default select"
-                placeholder={"Progress"}
-                id="inprogress"
-                name="inprogress"
-                onChange={onChange}
-                value={project.inprogress}
-              >
-                <option value=""></option>
-                <option value="inprogress">In progress</option>
-                <option value="Completed">Completed</option>
-              </select>
-              <label htmlFor="inprogress" className="form-label">
-                Progress
-              </label>
-            </div>
-            <div className="d-flex justify-content-evenly ">
+                </select>
+                {/* <input type="text" defaultValue={project.category} /> */}
+              </li>
+              <li>
+                <label>Progress</label>
+                <select
+                  aria-label="Default select"
+                  placeholder={"Progress"}
+                  id="inprogress"
+                  name="inprogress"
+                  onChange={onChange}
+                  defaultValue={project.inprogress}
+                >
+                  <option value=""></option>
+                  <option value="inprogress">In progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+                {/* <input type="text" defaultValue={project.pname} /> */}
+              </li>
+            </ul>
+            <div className="update-buttons">
               <button
-                className="btn btn-warning"
+                className="update-button"
                 onClick={() => navigate("/projects")}
               >
                 Cancel
@@ -353,7 +294,7 @@ const Updateproject = (props) => {
                   project.location.length < 3 ||
                   project.year.length < 4
                 }
-                className="btn btn-warning"
+                className="update-button"
                 onClick={handleClick}
               >
                 Update project
@@ -361,7 +302,7 @@ const Updateproject = (props) => {
               {/* <!-- Button trigger modal --> */}
               <button
                 type="button"
-                className="btn btn-warning"
+                className="update-button"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
               >
@@ -370,8 +311,8 @@ const Updateproject = (props) => {
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 

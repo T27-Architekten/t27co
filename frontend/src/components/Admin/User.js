@@ -1,36 +1,34 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
+import React from "react";
+import { Link } from "react-router-dom";
+// import AuthContext from "../../context/auth/authContext";
 import "./scss and css/User.scss";
 
 const User = (props) => {
-  const context = useContext(AuthContext);
-  const { getUser } = context;
-  const [editD, setEditD] = useState(true);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    role: "",
-  });
+  // const context = useContext(AuthContext);
+  // const { getUser } = context;
+  // const [editD, setEditD] = useState(true);
+  // const [user, setUser] = useState({
+  //   name: "",
+  //   email: "",
+  //   role: "",
+  // });
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    async function getUserDetails() {
-      const userDetails = await getUser();
-      if (userDetails) {
-        setUser({
-          name: userDetails.user.name,
-          email: userDetails.user.email,
-          role: userDetails.user.role,
-        });
-      }
-    }
-    getUserDetails();
-  }, []);
-
-  const handleUpdate = () => {};
+  // useEffect(() => {
+  //   async function getUserDetails() {
+  //     const userDetails = await getUser();
+  //     if (userDetails) {
+  //       setUser({
+  //         name: userDetails.user.name,
+  //         email: userDetails.user.email,
+  //         role: userDetails.user.role,
+  //       });
+  //     }
+  //   }
+  //   getUserDetails();
+  // }, []);
 
   //   const navUrl = "/projects";
-  const navigate = useNavigate();
 
   //   const handleSubmit = async (e) => {
   //     e.preventDefault();
@@ -47,13 +45,36 @@ const User = (props) => {
   //     }
   //   };
 
-  const onChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
+  // const onChange = (e) => {
+  //   setUser({ ...user, [e.target.name]: e.target.value });
+  // };
 
   return (
     <div className="user-container">
-      <div
+      <div className="img-contianer">
+        <img src="/static/Users.png" className="user-image" alt="" />
+      </div>
+      <div className="user-options">
+        <div className="user-buttons">
+          <Link className="user-button" to="/signup">
+            <i className="fa-solid fa-user-plus"></i>
+            Add User
+          </Link>
+        </div>
+        <div className="user-buttons">
+          <div className="user-button empty-button" to="/addproject"></div>
+        </div>
+        <div className="user-buttons">
+          <div className="user-button empty-button" to="/addproject"></div>
+        </div>
+        <div className="user-buttons">
+          <Link className="user-button" to="/addproject">
+            <i className="fa-solid fa-folder-plus"></i>
+            Add Project
+          </Link>
+        </div>
+      </div>
+      {/* <div
         className="user-label-h"
         style={{ backgroundImage: "url('/static/User-space.jpg')" }}
       >
@@ -62,6 +83,7 @@ const User = (props) => {
       <div className="user-options-flex">
         <div
           className="user-options"
+          onClick={() => navigate("/signup")}
           style={{ backgroundImage: "url('/static/Add-user.jpg')" }}
         >
           <h1 className="h1-add-user">Add User</h1>
@@ -69,10 +91,11 @@ const User = (props) => {
         <div
           className="user-options"
           style={{ backgroundImage: "url('/static/Add-project.jpg')" }}
+          onClick={() => navigate("/addproject")}
         >
           <h1 className="h1-add-project">Add Project</h1>
         </div>
-      </div>
+      </div> */}
     </div>
 
     // <>

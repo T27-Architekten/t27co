@@ -1,99 +1,183 @@
+@use "../../scss\ and\ css/lib.scss"as lib-scss;
+@use "../../scss\ and\ css/lib.scss";
+
 .user-container {
   position: relative;
   display: flex;
-  justify-content: center;
-  //   align-items: center;
-  flex-direction: column;
-  width: 100%;
+  // justify-content: center;
+
+  // flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 80%;
+  /* padding: 5% 10%; */
+  margin: 0 10%;
+
   height: 100vh;
-  background-color: #2c3337;
-
-  .user-label-h {
+  // background-color: #2c3337;
+  flex-direction: row;
+  .img-contianer,
+  .user-options {
     position: absolute;
-    padding-top: 100px;
-    width: 100%;
-    text-align: center;
-    top: 0;
-    height: 50%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    h1 {
-      font-weight: 500;
-      font-size: 70px;
-      letter-spacing: 10px;
-      color: white;
-      text-shadow: 0px 3px 10px rgb(169, 169, 169),
-        0px -3px 10px rgb(117, 117, 117);
-    }
+    // width: 400px;
+    // height: 100px;
   }
+  .user-image {
+    left: 10%;
 
-  .user-options-flex {
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    bottom: 0;
-
-    h1 {
-      text-shadow: 0px 3px 10px rgb(169, 169, 169),
-        0px -3px 10px rgb(117, 117, 117);
-    }
+    // float: left;
+  }
+  .img-contianer {
+    left: 0;
   }
 
   .user-options {
-    //   position: absolute;
-    color: white;
-    width: 100%;
-    padding-left: 20px;
-    // height: 410px;
     display: flex;
-    align-items: center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    //   background-image: url("/static/Add-user.jpg");
-
-    // h1 {
-    //   position: absolute;
-    //   animation: all 1s ease-in-out;
-    //   inset: auto auto 30px 30px;
-    // }
-    // &:hover h1 {
-    //   inset: auto auto 310px 30px;
-    //   animation: all 1s ease-in-out;
-    // }
-
-    .h1-add-user {
-      position: absolute;
-      inset: auto auto 30px 36%;
-      transition: all 0.4s ease-in-out;
-    }
-    &:hover .h1-add-user {
-      inset: auto auto 310px 36%;
-      // animation: all 1s ease-in-out;
-    }
-
-    .h1-add-project {
-      position: absolute;
-      // animation: all 1s ease-in-out;
-      inset: auto auto 30px 52%;
-      transition: all 0.4s ease-in-out;
-    }
-    &:hover .h1-add-project {
-      inset: auto auto 310px 52%;
-      // animation: all 1s ease-in-out;
-    }
-
-    &:hover {
-      box-shadow: rgb(210, 162, 108) -6px -15px 30px -12px inset,
-        rgb(120, 119, 113) -6px 18px 20px -18px inset;
-    }
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    width: 450px;
+    right: 0;
   }
+  .user-buttons {
+    // margin-right: 10%;
+    right: 0;
+    padding: 6px;
+    // width: 400px;
+    // height: 400px;
+    border-radius: 1rem;
+    // float: right;
+    // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+    //   rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+  }
+
+  .user-button {
+    @extend .t27-button;
+    padding: 17px;
+    width: 200px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    height: 170px;
+    text-decoration: none;
+    align-items: center;
+
+    justify-content: space-around;
+    // margin: 30px 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+
+    i {
+      display: block;
+      font-size: 100px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    // &:hover i {
+    //   transform: scale(1.1);
+    // }
+  }
+
+  .empty-button {
+    background-color: lib-scss.$tan-color;
+    // box-shadow: none;
+    // &:hover {
+    //   box-shadow: none;
+    //   // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+    //   //   rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+    // }
+    // &:active {
+    //   box-shadow: none;
+    //   // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+    //   //   rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+    // }
+  }
+
+  // .user-label-h {
+  //   position: absolute;
+  //   padding-top: 100px;
+  //   width: 100%;
+  //   text-align: center;
+  //   top: 0;
+  //   height: 50%;
+  //   -webkit-background-size: cover;
+  //   -moz-background-size: cover;
+  //   -o-background-size: cover;
+  //   background-size: cover;
+  //   h1 {
+  //     font-weight: 500;
+  //     font-size: 70px;
+  //     letter-spacing: 10px;
+  //     color: white;
+  //     text-shadow: 0px 3px 10px rgb(169, 169, 169),
+  //       0px -3px 10px rgb(117, 117, 117);
+  //   }
+  // }
+
+  // .user-options-flex {
+  //   position: absolute;
+  //   width: 100%;
+  //   height: 50%;
+  //   display: flex;
+  //   flex-direction: row;
+  //   justify-content: space-evenly;
+  //   bottom: 0;
+
+  //   h1 {
+  //     text-shadow: 0px 3px 10px rgb(169, 169, 169),
+  //       0px -3px 10px rgb(117, 117, 117);
+  //   }
+  // }
+
+  // .user-options {
+  //   //   position: absolute;
+  //   color: white;
+  //   width: 100%;
+  //   padding-left: 20px;
+  //   // height: 410px;
+  //   display: flex;
+  //   align-items: center;
+  //   -webkit-background-size: cover;
+  //   -moz-background-size: cover;
+  //   -o-background-size: cover;
+  //   background-size: cover;
+  //   cursor: pointer;
+  //   transition: all 0.3s ease-in-out;
+  //   //   background-image: url("/static/Add-user.jpg");
+
+  //   // h1 {
+  //   //   position: absolute;
+  //   //   animation: all 1s ease-in-out;
+  //   //   inset: auto auto 30px 30px;
+  //   // }
+  //   // &:hover h1 {
+  //   //   inset: auto auto 310px 30px;
+  //   //   animation: all 1s ease-in-out;
+  //   // }
+
+  //   .h1-add-user {
+  //     position: absolute;
+  //     inset: auto auto 30px 36%;
+  //     transition: all 0.4s ease-in-out;
+  //   }
+  //   &:hover .h1-add-user {
+  //     inset: auto auto 310px 36%;
+  //     // animation: all 1s ease-in-out;
+  //   }
+
+  //   .h1-add-project {
+  //     position: absolute;
+  //     // animation: all 1s ease-in-out;
+  //     inset: auto auto 30px 52%;
+  //     transition: all 0.4s ease-in-out;
+  //   }
+  //   &:hover .h1-add-project {
+  //     inset: auto auto 310px 52%;
+  //     // animation: all 1s ease-in-out;
+  //   }
+
+  //   &:hover {
+  //     box-shadow: rgb(210, 162, 108) -6px -15px 30px -12px inset,
+  //       rgb(120, 119, 113) -6px 18px 20px -18px inset;
+  //   }
+  // }
 }

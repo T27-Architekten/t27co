@@ -95,56 +95,49 @@ const ProjectState = (props) => {
   };
 
   // ------------------------------------------------------------------- Edit an existing project. Authentication required.
-  const editProject = async (
-    // id,
-    // pname,
-    // description,
-    // location,
-    // year,
-    // category,
-    // inprogress,
-    // show
-    formData
-  ) => {
-    // console.log(formData.values(), 113);
+  const editProject = async (formData) => {
     for (const value of formData.values()) {
-      console.log(value, 103);
+      console.log(value, 100);
     }
-    console.log(formData.get("_id"), 105);
+
+    console.log(formData.get("_id"), 103);
     props.setProgress(10);
+
     // Api Call
-    const response = await fetch(
-      `${host_env}/api/projects/updateproject/${formData.get("_id")}`,
-      {
-        method: "PUT",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-        body: formData,
-      }
-    );
+    const response = await fetch(`${host_env}/api/projects/updateproject`, {
+      method: "PUT",
+      headers: {
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: formData,
+    });
 
     props.setProgress(30);
     const json = await response.json();
-    console.log(json, "Project Updated.");
-    props.setProgress(50);
-    let newProjects = JSON.parse(JSON.stringify(projects));
-    // Logic to edit in client
-    // for (let index = 0; index < projects.length; index++) {
-    //   const element = newProjects[index];
-    //   if (element._id === id) {
-    //     newProjects[index].pname = pname;
-    //     newProjects[index].description = description;
-    //     newProjects[index].location = location;
-    //     newProjects[index].year = year;
-    //     newProjects[index].category = category;
-    //     newProjects[index].inprogress = inprogress;
-    //     break;
-    //   }
-    // }
-    props.setProgress(70);
-    setProjects(newProjects);
-    props.setProgress(100);
+    if (json.success) {
+      console.log(json, "Project Updated.");
+      props.setProgress(50);
+      let newProjects = JSON.parse(JSON.stringify(projects));
+      // Logic to edit in client
+      // for (let index = 0; index < projects.length; index++) {
+      //   const element = newProjects[index];
+      //   if (element._id === id) {
+      //     newProjects[index].pname = pname;
+      //     newProjects[index].description = description;
+      //     newProjects[index].location = location;
+      //     newProjects[index].year = year;
+      //     newProjects[index].category = category;
+      //     newProjects[index].inprogress = inprogress;
+      //     break;
+      //   }
+      // }
+      props.setProgress(70);
+      setProjects(newProjects);
+      props.setProgress(100);
+    } else {
+      props.setProgress(100);
+      return false;
+    }
   };
 
   // ------------------------------------------------------------------- Check project whether it exists or not.
@@ -163,7 +156,7 @@ const ProjectState = (props) => {
       props.setProgress(60);
       // Get data if there is.
       const json = await response.json();
-      props.setProgress(80);
+      // props.setProgress(80);
       props.setProgress(100);
       return json;
     } catch (error) {
@@ -171,12 +164,40 @@ const ProjectState = (props) => {
     }
   };
 
+  // const deleteImage = async (projectId, image) => {
+  //   console.log(projectId, image);
+  //   props.setProgress(10);
+  //   const response = await fetch("/api/projects/deleteimage", {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "auth-token": localStorage.getItem("token"),
+  //     },
+  //     body: JSON.stringify({}),
+  //   });
+  //   try {
+  //     props.setProgress(60);
+  //     // Get data if there is.
+  //     const json = await response.json();
+
+  //     if (json.success) {
+  //       props.setProgress(100);
+  //       return json.success;
+  //     }
+  //   } catch (error) {
+  //     props.setProgress(100);
+  //     console.log({ Error: error });
+  //     return false;
+  //   }
+  // };
+
   return (
     <ProjectContext.Provider
       value={{
         projects,
         addProject,
         getProjects,
+        // deleteImage,
         editProject,
         deleteProject,
         checkproject,

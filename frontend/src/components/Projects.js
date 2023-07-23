@@ -7,12 +7,11 @@ import "./scss and css/Projects.scss";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 
-import ProjectItem from "./Projectitem";
-
 const Projects = (props) => {
   const context = useContext(projectContext);
   const { projects, getProjects } = context;
   const navigate = useNavigate();
+
   // const { showAlert } = props;
   // const [allprojects, setAllprojects] = useState(null);
   const [projectNumber, setProjectNumber] = useState(0);
@@ -62,14 +61,41 @@ const Projects = (props) => {
     <Spinner />
   ) : (
     <div className="projects-container">
-      <div
-        className="projects-image"
-        style={{
-          backgroundImage: `url('${handleImages(
-            projects[projectNumber]?.images
-          )}')`,
-        }}
-      ></div>
+      <picture
+        className="projects-picture"
+        key={`picture-${projects[projectNumber]?.images}`}
+      >
+        <source
+          type="image/avif"
+          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+        />
+        <source
+          type="image/webp"
+          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+        />
+        <img
+          className="projects-image"
+          key={projects[projectNumber]?.images}
+          src={handleImages(projects[projectNumber]?.images)}
+          alt={projects[projectNumber]?.images}
+          loading="lazy"
+          role="presentation"
+          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+          sizes="(max-width:800px) 100vw, 50vw"
+          // decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
+      {/* <div></div> */}
       <div className="projects-info">
         <h1>Projects</h1>
 
@@ -89,31 +115,23 @@ const Projects = (props) => {
           <div className="project-details">
             <ul>
               <li className="project-pname">
-                {projects[projectNumber].pname} <hr style={{ width: "80px" }} />
+                {projects[projectNumber].pname}{" "}
+                <hr style={{ width: "100px" }} />
               </li>
               <li>
                 {projects[projectNumber].year}
                 &nbsp;&nbsp;&nbsp;
-                <i
-                  className="fa-regular fa-calendar project-details-icon"
-                  style={{ color: " #ffffff" }}
-                ></i>
+                <i className="fa-regular fa-calendar project-details-icon"></i>
               </li>
               <li>
                 {projects[projectNumber].location}
                 &nbsp;&nbsp;&nbsp;
-                <i
-                  className="fa-solid fa-location-dot project-details-icon"
-                  style={{ color: " #ffffff" }}
-                ></i>
+                <i className="fa-solid fa-location-dot project-details-icon"></i>
               </li>
               <li>
                 {projects[projectNumber].category}
                 &nbsp;&nbsp;&nbsp;
-                <i
-                  className="fa-solid fa-building project-details-icon"
-                  style={{ color: " #ffffff" }}
-                ></i>
+                <i className="fa-solid fa-building project-details-icon"></i>
               </li>
               {localStorage.getItem("token") && (
                 <li>
@@ -121,10 +139,7 @@ const Projects = (props) => {
                     ? "Visible to all"
                     : "Hidden to customers"}
                   &nbsp;&nbsp;&nbsp;
-                  <i
-                    className="fa-solid fa-eye project-details-icon"
-                    style={{ color: " #ffffff" }}
-                  ></i>
+                  <i className="fa-solid fa-eye project-details-icon"></i>
                 </li>
               )}
               <li>
@@ -132,11 +147,14 @@ const Projects = (props) => {
                   className="view-more-button"
                   type="button"
                   value="View more"
-                  onClick={() =>
-                    navigate("/projectitem", {
-                      state: { projectNumber },
-                    })
-                  }
+                  onClick={() => {
+                    localStorage.setItem(
+                      "project-edit",
+                      JSON.stringify(projects[projectNumber])
+                    );
+                    console.log(projects[projectNumber].pname);
+                    navigate("/projectitem");
+                  }}
                 />
               </li>
             </ul>
@@ -144,85 +162,6 @@ const Projects = (props) => {
           </div>
         </div>
       </div>
-
-      {/* <div className="all-projects">
-        {projects.map((project, index) => {
-          return (
-            <div className="card" key={index}>
-              <img src={handleImages(project.images)} alt="" />
-              <div className="card-content">
-                <h3>{project.pname}</h3>
-                <p>{project.description}</p>
-                <a href="#" className="button">
-                  Find out more &nbsp;
-                  <i
-                    className="fa-solid fa-arrow-right"
-                    style={{ color: " #000000" }}
-                  ></i>
-                </a>
-              </div>
-            </div>
-          );
-        })}
-      </div> */}
-
-      {/* <div className="card">
-        <img
-          src="https://images.unsplash.com/photo-1656618020911-1c7a937175fd?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTc1MzQyNTE&ixlib=rb-1.2.1&q=80"
-          alt=""
-        />
-        <div className="card-content">
-          <h3>Card Heading</h3>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            exercitationem iste, voluptatum, quia explicabo laboriosam rem
-            adipisci voluptates cumque, veritatis atque nostrum corrupti ipsa
-            asperiores harum? Dicta odio aut hic.
-          </p>
-          <a href="#" className="button">
-            Find out more &nbsp;
-            <i
-              className="fa-solid fa-arrow-right"
-              style={{ color: " #ffffff" }}
-            ></i>
-          </a>
-        </div>
-      </div> */}
-
-      {/* <section id="timeline">
-          {projects.map((project, index) => {
-            return (
-              (localStorage.getItem("token") || project.show) && (
-                <div className="tl-item" key={index}>
-                  <div
-                    className="tl-bg"
-                    // style={{
-                    //   backgroundImage: "url('../asset/images/Images-page/pic2.jpg')",
-                    // }}
-                  >
-                    <img
-                      className="image-timeline"
-                      // src={require("../asset/images/Images-page/pic2.jpg")}
-                      src={handleImages(project.images)}
-                      alt="img"
-                    />
-                  </div>
-
-                  <div className="tl-year">
-                    <p className="f2 heading--sanSerif">{project.year}</p>
-                  </div>
-
-                  <div className="tl-content">
-                    <h1>{project.pname}</h1>
-                    <p>{project.description}</p>
-                  </div>
-                </div>
-              )
-            );
-          })}
-
-        
-        </section> */}
     </div>
   );
 };
