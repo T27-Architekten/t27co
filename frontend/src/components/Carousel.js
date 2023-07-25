@@ -44,16 +44,7 @@ const Carousel = (props) => {
     items && (
       <div className="carousel">
         {/* -------------------------------------------------------- Close button */}
-        <div
-          className="carousel-close"
-          style={{
-            position: "absolute",
-            top: "15px",
-            right: "10px",
-            textShadow:
-              "rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px, rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px",
-          }}
-        >
+        <div className="carousel-close">
           <i
             className="fa-solid fa-xmark fa-2xl"
             style={{
