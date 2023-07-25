@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import LoadingBar from "react-top-loading-bar";
-// ------------------------------------------------ Pages
+// ------------------------------------------------ Components
 import Home from "./components/Home";
 import Projects from "./components/Projects";
 import { Navbar } from "./components/Navbar";
@@ -16,6 +16,7 @@ import User from "./components/Admin/User";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import NotFound from "./components/NotFound";
 import Modal from "./components/Modal";
+import Carousel from "./components/Carousel";
 
 // ------------------------------------------------ Contexts
 import ProjectState from "./context/projects/ProjectState";
@@ -27,6 +28,7 @@ function App() {
   const [progress, setProgress] = useState(0);
   // const [loggedIn, setLoggedIn] = useState(false);
   const [modal, setModal] = useState(null);
+  const [carousel, setCarousel] = useState(null);
 
   const showAlert = (message, type, ms) => {
     if (!ms) {
@@ -54,6 +56,10 @@ function App() {
     });
   };
 
+  const showCarousel = (images, imageKey) => {
+    setCarousel({ images, imageKey });
+  };
+
   return (
     <div className="App">
       <ProjectState setProgress={setProgress} showAlert={showAlert}>
@@ -63,6 +69,7 @@ function App() {
             <Navbar showAlert={showAlert} setProgress={setProgress} />
             <Alert alert={alert} />
             <Modal modal={modal} setModal={setModal} />
+            <Carousel carousel={carousel} showCarousel={showCarousel} />
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route
@@ -86,6 +93,7 @@ function App() {
                   <Projectitem
                     showAlert={showAlert}
                     setProgress={setProgress}
+                    showCarousel={showCarousel}
                   />
                 }
               />
@@ -117,6 +125,7 @@ function App() {
                       showAlert={showAlert}
                       setProgress={setProgress}
                       showModal={showModal}
+                      showCarousel={showCarousel}
                     />
                   }
                 />

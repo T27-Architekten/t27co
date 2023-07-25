@@ -29,18 +29,6 @@ const Updateproject = (props) => {
   // console.log(images);
   const handleClick = (e) => {
     e.preventDefault();
-    // console.log(project);
-    // editProject(
-    //   project._id,
-    //   project.pname,
-    //   project.description,
-    //   project.location,
-    //   project.year,
-    //   project.category,
-    //   project.inprogress,
-    //   project.show
-    // );
-    // console.log(editedProject);
     const formData = new FormData();
     formData.append("_id", project._id);
     formData.append("pname", project.pname);
@@ -50,22 +38,6 @@ const Updateproject = (props) => {
     formData.append("category", project.category);
     formData.append("inprogress", project.inprogress);
     formData.append("show", project.show);
-    // formData.append("images", images);
-    // images.map((image) => formData.append("images", image));
-    for (let x = 0; x < images.length; x++) {
-      if (
-        images[x].endsWith("image/png") ||
-        images[x].endsWith("image/jpg") ||
-        images[x].endsWith("image/jpeg")
-      ) {
-        return showAlert(
-          "The image format should be png, jpg or jpeg.",
-          "danger"
-        );
-      } else {
-        formData.append("images", images[x]);
-      }
-    }
 
     if (editProject(formData)) {
       showAlert(
@@ -98,9 +70,10 @@ const Updateproject = (props) => {
 
   // ---------------------------------------------------------------- Delete Image.
   const deleteImage = async (projectId, image) => {
-    console.log(projectId, image);
+    // console.log(projectId, image);
     props.setProgress(10);
 
+    // fetch api for deleting image.
     const response = await fetch(`${host_env}/api/projects/deleteimage`, {
       method: "PUT",
       headers: {
@@ -109,9 +82,13 @@ const Updateproject = (props) => {
       },
       body: JSON.stringify({ id: projectId, image: image }),
     });
+
+    // Try catch for handling errors.
     try {
+      // props.setProgress() for progress bar.
       props.setProgress(60);
-      // Get data if there is.
+
+      // Get response after running fetch api method.
       const json = await response.json();
 
       // If backend code worked well.
@@ -168,7 +145,14 @@ const Updateproject = (props) => {
                         className="project-images div-image"
                         key={key + "-image"}
                       >
-                        <img src={`/static/uploads/projects/${image}`} alt="" />
+                        <img
+                          src={`/static/uploads/projects/${image}`}
+                          alt=""
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            props.showCarousel(images, key);
+                          }}
+                        />
                       </div>
                       <div
                         className="project-images div-icon"
@@ -282,12 +266,7 @@ const Updateproject = (props) => {
               </li>
             </ul>
             <div className="update-buttons">
-              <button
-                className="update-button"
-                onClick={() => navigate("/projects")}
-              >
-                Cancel
-              </button>
+              {/* -------------------------------- Update Button */}
               <button
                 disabled={
                   project.pname.length < 3 ||
@@ -299,14 +278,23 @@ const Updateproject = (props) => {
               >
                 Update project
               </button>
-              {/* <!-- Button trigger modal --> */}
+              {/* ------------------------------------- Cancel buttone will you back to projects page. */}
               <button
-                type="button"
+                className="update-button"
+                onClick={() => navigate("/projects")}
+              >
+                Cancel
+              </button>
+              {/* ----------------------------------------- Add image to existing project. */}
+              <button className="update-button">Add Images</button>
+
+              {/* ------------------------------------------- Delete whole project. */}
+              <button
                 className="update-button"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
               >
-                Delete
+                Delete Project
               </button>
             </div>
           </div>

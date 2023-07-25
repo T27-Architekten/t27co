@@ -89,6 +89,7 @@ const Projectitem = (props) => {
                 sizes="(max-width:800px) 100vw, 50vw"
                 // decoding="async"
                 fetchpriority="high"
+                onClick={() => props.showCarousel(project.images, index)}
               />
             </picture>
           );
@@ -98,6 +99,7 @@ const Projectitem = (props) => {
           className="projectitem-image"
           src={`/static/uploads/projects/${project.images}`}
           alt=""
+          onClick={() => props.showCarousel(project.images, 0)}
         />
       )}
       {/* {project.images.map((image, index) => {

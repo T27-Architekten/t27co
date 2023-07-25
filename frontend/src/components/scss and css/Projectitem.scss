@@ -41,7 +41,11 @@
     // transition: all 0.5s ease-in-out;
     // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
     //   rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+    border-radius: 0.5rem;
     animation: movefromdown 1s ease-in-out;
+    cursor: pointer;
   }
   picture:nth-child(2) {
     animation: movefromleft 1s ease-in-out;
@@ -87,7 +91,7 @@
   width: 100px;
   margin: 30px 30px 30px 0;
   // box-shadow: none;
-  animation: fade-in 1s 1s forwards ease;
+  animation: fade-in 1s 0.5s forwards ease;
   visibility: 0;
   // box-shadow: rgba(0, 0, 0, 0.714) 0.95px 0.95px 3px,
   //   rgba(196, 196, 196, 0.345) -0.95px -0.95px 3px;
