@@ -110,9 +110,9 @@ router.put("/updateproject", fetchuser, async (req, res) => {
       inprogress,
       show,
     } = req.body;
-    console.log(111, req.body);
+    console.log(req.body, 113);
     // console.log(112, pname);
-    let images = [];
+    // let images = [];
     // console.log(req.files[0].path);
     // if (req.files.length > 0) {
     //   for (i = 0; i < req.files.length; i++) {
@@ -153,7 +153,7 @@ router.put("/updateproject", fetchuser, async (req, res) => {
     }
     newProject.alteredby = user.name;
 
-    console.log(_id);
+    console.log(newProject);
     // Find the project and update it. ----
     let project = await Project.findById(_id);
 
@@ -163,12 +163,17 @@ router.put("/updateproject", fetchuser, async (req, res) => {
     }
 
     project = await Project.findByIdAndUpdate(
-      req.params.id,
+      _id,
       { $set: newProject },
       { new: true }
     );
-    success = true;
-    res.json(project, success);
+    if (project) {
+      success = true;
+      res.status(200).json({ project, success });
+    } else {
+      success = false;
+      res.status(400).json({ success });
+    }
   } catch (error) {
     success = false;
     console.error(error.message);
@@ -234,7 +239,7 @@ router.put("/deleteimage", fetchuser, deleteImage, async (req, res) => {
     }
 
     // Find and delete the image from the images array in the project.
-    let deleteImage = await Project.findByIdAndUpdate(
+    const deleteImage = await Project.findByIdAndUpdate(
       { _id: id },
       { $pull: { images: image } }
     );
@@ -243,6 +248,54 @@ router.put("/deleteimage", fetchuser, deleteImage, async (req, res) => {
     if (deleteImage) {
       success = true;
       res.json({ success, Deleted: "The project has been deleted." });
+    }
+  } catch (error) {
+    success = false;
+    console.error(error.message);
+    res.status(500).json({ success, Error: "Internal server error." });
+  }
+});
+
+// ROUTE 6: Add images to the existing project: POST "/api/projects/addimages". Login required.
+router.put("/addimages", fetchuser, uploads, async (req, res) => {
+  try {
+    let success = false;
+    // Get id and image from the body.
+    const { id, pname } = req.body;
+    console.log(id + pname, 265);
+
+    let images = [];
+
+    if (req.files.length > 0) {
+      for (i = 0; i < req.files.length; i++) {
+        // images.push(req.files[i].path);
+        images.push(req.files[i].filename);
+      }
+    }
+
+    console.log(images, 276);
+
+    // Check the availability of the project.
+    let projectId = await Project.findById({ _id: id });
+    if (!projectId) {
+      return res.status(404).send({ Unsuccessfull: "Project not found." });
+    }
+
+    // Push multiple values in the images array.
+    const project = await Project.findByIdAndUpdate(
+      { _id: id },
+      { $push: { images: { $each: images, $position: 0 } } }
+    );
+
+    // Respond if succussfully updated.
+    if (project) {
+      success = true;
+      console.log(project);
+      res.json({
+        success,
+        Added: "The project's images are updated.",
+        images,
+      });
     }
   } catch (error) {
     success = false;

@@ -95,12 +95,12 @@ const ProjectState = (props) => {
   };
 
   // ------------------------------------------------------------------- Edit an existing project. Authentication required.
-  const editProject = async (formData) => {
-    for (const value of formData.values()) {
-      console.log(value, 100);
-    }
+  const editProject = async (project) => {
+    // for (const value of formData.values()) {
+    //   console.log(value, 100);
+    // }
 
-    console.log(formData.get("_id"), 103);
+    // console.log(project, 103);
     props.setProgress(10);
 
     // Api Call
@@ -108,34 +108,28 @@ const ProjectState = (props) => {
       method: "PUT",
       headers: {
         "auth-token": localStorage.getItem("token"),
+        "content-type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify(project),
     });
-
+    // console.log(JSON.stringify(project));
     props.setProgress(30);
     const json = await response.json();
     if (json.success) {
-      console.log(json, "Project Updated.");
+      // console.log(json, "Project Updated.");
       props.setProgress(50);
-      let newProjects = JSON.parse(JSON.stringify(projects));
-      // Logic to edit in client
-      // for (let index = 0; index < projects.length; index++) {
-      //   const element = newProjects[index];
-      //   if (element._id === id) {
-      //     newProjects[index].pname = pname;
-      //     newProjects[index].description = description;
-      //     newProjects[index].location = location;
-      //     newProjects[index].year = year;
-      //     newProjects[index].category = category;
-      //     newProjects[index].inprogress = inprogress;
-      //     break;
-      //   }
-      // }
+      let newProject = json.project;
+      projects.filter((project) => project._id !== newProject._id);
+      // console.log(newProject);
       props.setProgress(70);
-      setProjects(newProjects);
+      // let newProjects = JSON.parse(JSON.stringify(projects));
+      // setProjects(newProjects);
+      projects.push(newProject);
       props.setProgress(100);
+      return true;
     } else {
       props.setProgress(100);
+      console.log("Project udpation failed.");
       return false;
     }
   };

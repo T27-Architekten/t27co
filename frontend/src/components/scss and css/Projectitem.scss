@@ -4,26 +4,39 @@
 // @import "./Projects.scss";
 
 .projectitem-container {
-  @extend .t27-container;
+  // @extend .t27-container;
   flex-wrap: wrap;
   justify-content: center;
-  flex-direction: row-reverse;
+  flex-direction: row;
   //   transition: all 0.5s ease-in-out;
+  // padding-top: 7%;
 
   .projectitem-details {
     color: #d1b08f;
     flex-direction: column;
     // justify-content: center;
     // width: 50%;
-    max-width: 45%;
+    // width: 45%;
     display: flex;
     // height: 100%;
-    padding: 4%;
-    margin: 10px;
+    padding: 10px;
+    // margin: 10px 10px 3% 10px;
+
+    // margin: 10px;
     // padding-left: 5%;
     /* align-items: center; */
     text-align: left;
     animation: movefromup 1s ease-in-out;
+
+    h1 {
+      font-weight: 600;
+      margin: 0;
+    }
+    h1 {
+      margin: 0.25rem 0;
+      border: 0;
+    }
+
     ul {
       list-style-type: none;
       padding-left: 0;
@@ -31,13 +44,29 @@
     }
   }
 
+  .projectitem-details-background {
+    // padding: 70px 10%;
+    padding: 7% 21% 0 21%;
+    background-color: #23292c;
+  }
+
+  .projectitem-images-background {
+    padding: 3% 10% 0 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .projectitem-picture {
-    max-width: 45%;
+    // max-width: 85%;
+    display: contents;
   }
 
   .projectitem-image {
-    max-width: 95%;
-    margin: 10px;
+    max-width: 75%;
+
+    margin: 10px 10px 3% 10px;
     // transition: all 0.5s ease-in-out;
     // box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
     //   rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
@@ -47,9 +76,12 @@
     animation: movefromdown 1s ease-in-out;
     cursor: pointer;
   }
-  picture:nth-child(2) {
-    animation: movefromleft 1s ease-in-out;
-  }
+  // picture:nth-child(2) {
+  //   animation: movefromleft 1s ease-in-out;
+  // }
+  // picture:nth-child(3) {
+  //   animation: movefromright 1s ease-in-out;
+  // }
 }
 
 @keyframes movefromup {
@@ -74,19 +106,32 @@
   }
 }
 
-@keyframes movefromleft {
-  0% {
-    transform: translateX(-100px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+// @keyframes movefromleft {
+//   0% {
+//     transform: translateX(-100px);
+//     opacity: 0;
+//   }
+//   100% {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
+
+// @keyframes movefromright {
+//   0% {
+//     transform: translateX(0);
+//     opacity: 0;
+//   }
+//   100% {
+//     transform: translateY(-100px);
+//     opacity: 1;
+//   }
+// }
 
 .projectitem-button {
   @extend .t27-button;
+  background-color: #23292c;
+
   padding: 6px 17px;
   width: 100px;
   margin: 30px 30px 30px 0;

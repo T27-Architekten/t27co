@@ -14,10 +14,6 @@ const imgConfig = multer.diskStorage({
   },
 
   filename: (req, file, callback) => {
-    // callback(
-    //   null,
-    //   `image-${req.body.pname}-${Date.now()}-${file.originalname}`
-    // );
     if (
       file.mimetype == "image/png" ||
       file.mimetype == "image/jpg" ||

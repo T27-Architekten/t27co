@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./scss and css/Navbar.scss";
 
@@ -15,6 +15,14 @@ export const Navbar = (props) => {
       return true;
     }
   };
+
+  useEffect(() => {
+    if (window.location.pathname === "/updateproject") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    } // eslint-disable-next-line
+  }, [window.location.pathname]);
 
   // const onClick = () => {
   //   localStorage.clear();

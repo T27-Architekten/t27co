@@ -4,7 +4,7 @@ import projectContext from "../context/projects/projectContext";
 // import background from "../images/list1.jpg";
 // import Projectitem from "../components/Projectitem";
 import "./scss and css/Projects.scss";
-import Spinner from "./Spinner";
+// import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 
 const Projects = (props) => {
@@ -56,113 +56,125 @@ const Projects = (props) => {
 
   // console.log(projects);
 
-  return projects.length < 1 ? (
-    // Loader for loading the page.
-    <Spinner />
-  ) : (
-    <div className="projects-container">
-      <picture
-        className="projects-picture"
-        key={`picture-${projects[projectNumber]?.images}`}
-      >
-        <source
-          type="image/avif"
-          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
-                ${projects[projectNumber]?.images}?width=200 200vw,
-                ${projects[projectNumber]?.images}?width=400 400vw,
-                ${projects[projectNumber]?.images}?width=800 800vw,`}
-        />
-        <source
-          type="image/webp"
-          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
-                ${projects[projectNumber]?.images}?width=200 200vw,
-                ${projects[projectNumber]?.images}?width=400 400vw,
-                ${projects[projectNumber]?.images}?width=800 800vw,`}
-        />
-        <img
-          className="projects-image"
-          key={projects[projectNumber]?.images}
-          src={handleImages(projects[projectNumber]?.images)}
-          alt={projects[projectNumber]?.images}
-          loading="lazy"
-          role="presentation"
-          srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
-                ${projects[projectNumber]?.images}?width=200 200vw,
-                ${projects[projectNumber]?.images}?width=400 400vw,
-                ${projects[projectNumber]?.images}?width=800 800vw,`}
-          sizes="(max-width:800px) 100vw, 50vw"
-          // decoding="async"
-          fetchpriority="high"
-        />
-      </picture>
-      {/* <div></div> */}
-      <div className="projects-info">
-        <h1>Projects</h1>
+  //  projects.length < 1 ? (
+  //   // Loader for loading the page.
+  //   <Spinner />
+  // ) : (
 
-        <div className="project-prevNext-details">
-          <div className="projects-prevNext">
-            <div onClick={goToPrevious} className="leftArrowStyles arrow-click">
-              ❰
-            </div>
-            &nbsp;{` ${projectNumber + 1} / ${projects.length} `}&nbsp;
-            <div onClick={goToNext} className="rightArrowStyles arrow-click">
-              ❱
-            </div>
-            <hr style={{ border: "1px solid" }} />
-          </div>
+  return (
+    <>
+      {projects?.length && (
+        <div className="projects-container">
+          <picture
+            className="projects-picture"
+            key={`picture-${projects[projectNumber]?.images}`}
+          >
+            <source
+              type="image/avif"
+              srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+            />
+            <source
+              type="image/webp"
+              srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+            />
+            <img
+              className="projects-image"
+              key={projects[projectNumber]?.images}
+              src={handleImages(projects[projectNumber]?.images)}
+              alt={projects[projectNumber]?.images}
+              loading="lazy"
+              role="presentation"
+              srcSet={`${projects[projectNumber]?.images}?width=100 100vw,
+                ${projects[projectNumber]?.images}?width=200 200vw,
+                ${projects[projectNumber]?.images}?width=400 400vw,
+                ${projects[projectNumber]?.images}?width=800 800vw,`}
+              sizes="(max-width:800px) 100vw, 50vw"
+              // decoding="async"
+              fetchpriority="high"
+            />
+          </picture>
+          {/* <div></div> */}
+          <div className="projects-info">
+            <h1>Projects</h1>
 
-          {/* ------------------------ PROJECT DETAILS */}
-          <div className="project-details">
-            <ul>
-              <li className="project-pname">
-                {projects[projectNumber].pname}{" "}
-                <hr style={{ width: "100px" }} />
-              </li>
-              <li>
-                {projects[projectNumber].year}
-                &nbsp;&nbsp;&nbsp;
-                <i className="fa-regular fa-calendar project-details-icon"></i>
-              </li>
-              <li>
-                {projects[projectNumber].location}
-                &nbsp;&nbsp;&nbsp;
-                <i className="fa-solid fa-location-dot project-details-icon"></i>
-              </li>
-              <li>
-                {projects[projectNumber].category}
-                &nbsp;&nbsp;&nbsp;
-                <i className="fa-solid fa-building project-details-icon"></i>
-              </li>
-              {localStorage.getItem("token") && (
-                <li>
-                  {projects[projectNumber].show
-                    ? "Visible to all"
-                    : "Hidden to customers"}
-                  &nbsp;&nbsp;&nbsp;
-                  <i className="fa-solid fa-eye project-details-icon"></i>
-                </li>
-              )}
-              <li>
-                <input
-                  className="view-more-button"
-                  type="button"
-                  value="View more"
-                  onClick={() => {
-                    localStorage.setItem(
-                      "project-edit",
-                      JSON.stringify(projects[projectNumber])
-                    );
-                    console.log(projects[projectNumber].pname);
-                    navigate("/projectitem");
-                  }}
-                />
-              </li>
-            </ul>
-            {/* <div></div> */}
+            <div className="project-prevNext-details">
+              <div className="projects-prevNext">
+                <div
+                  onClick={goToPrevious}
+                  className="leftArrowStyles arrow-click"
+                >
+                  ❰
+                </div>
+                &nbsp;{` ${projectNumber + 1} / ${projects.length} `}&nbsp;
+                <div
+                  onClick={goToNext}
+                  className="rightArrowStyles arrow-click"
+                >
+                  ❱
+                </div>
+                <hr style={{ border: "1px solid" }} />
+              </div>
+
+              {/* ------------------------ PROJECT DETAILS */}
+              <div className="project-details">
+                <ul>
+                  <li className="project-pname">
+                    {projects[projectNumber].pname}{" "}
+                    <hr style={{ width: "100px" }} />
+                  </li>
+                  <li>
+                    {projects[projectNumber].year}
+                    &nbsp;&nbsp;&nbsp;
+                    <i className="fa-regular fa-calendar project-details-icon"></i>
+                  </li>
+                  <li>
+                    {projects[projectNumber].location}
+                    &nbsp;&nbsp;&nbsp;
+                    <i className="fa-solid fa-location-dot project-details-icon"></i>
+                  </li>
+                  <li>
+                    {projects[projectNumber].category}
+                    &nbsp;&nbsp;&nbsp;
+                    <i className="fa-solid fa-building project-details-icon"></i>
+                  </li>
+                  {localStorage.getItem("token") && (
+                    <li>
+                      {projects[projectNumber].show
+                        ? "Visible to all"
+                        : "Hidden to customers"}
+                      &nbsp;&nbsp;&nbsp;
+                      <i className="fa-solid fa-eye project-details-icon"></i>
+                    </li>
+                  )}
+                  <li>
+                    <input
+                      className="view-more-button"
+                      type="button"
+                      value="View more"
+                      onClick={() => {
+                        localStorage.setItem(
+                          "project-edit",
+                          JSON.stringify(projects[projectNumber])
+                        );
+                        console.log(projects[projectNumber].pname);
+                        navigate("/projectitem");
+                      }}
+                    />
+                  </li>
+                </ul>
+                {/* <div></div> */}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

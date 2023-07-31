@@ -1,9 +1,10 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.scss";
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 // ------------------------------------------------ Components
-import Home from "./components/Home";
+import Home from "../src/components/Home";
 import Projects from "./components/Projects";
 import { Navbar } from "./components/Navbar";
 import ContactUs from "./components/ContactUs";
@@ -62,10 +63,17 @@ function App() {
 
   return (
     <div className="App">
+      {window.document.readyState === "loading" && (
+        <div className="loader-wrapper">
+          <span className="loader">
+            <span className="loader-inner"></span>
+          </span>
+        </div>
+      )}
       <ProjectState setProgress={setProgress} showAlert={showAlert}>
         <AuthState setProgress={setProgress} showAlert={showAlert}>
           <Router>
-            <LoadingBar height={2.5} color="#d1b08f" progress={progress} />
+            <LoadingBar height={3} color="#d1b08f" progress={progress} />
             <Navbar showAlert={showAlert} setProgress={setProgress} />
             <Alert alert={alert} />
             <Modal modal={modal} setModal={setModal} />

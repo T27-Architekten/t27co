@@ -42,7 +42,7 @@ const Carousel = (props) => {
 
   return (
     items && (
-      <div className="carousel">
+      <div className="carousel" key="carousel-1">
         {/* -------------------------------------------------------- Close button */}
         <div className="carousel-close">
           <i
@@ -52,7 +52,9 @@ const Carousel = (props) => {
               cursor: "pointer",
               fontSize: "40px",
             }}
-            onClick={() => props.showCarousel(null)}
+            onClick={(e) => {
+              props.showCarousel(null);
+            }}
           ></i>
         </div>
         <div className="carousel-slides">
@@ -62,6 +64,7 @@ const Carousel = (props) => {
                 className="carousel-image"
                 src={`/static/uploads/projects/${items[activeIndex]}`}
                 alt=""
+                key={items[activeIndex]}
               />
             )}
           </div>
@@ -70,7 +73,7 @@ const Carousel = (props) => {
         <div className="carousel-controls">
           <span className="goToSlide goTo-Dots-padding" onClick={goToPrevSlide}>
             <i
-              class="fa-solid fa-chevron-left"
+              className="fa-solid fa-chevron-left"
               style={{ color: " #2c3337" }}
             ></i>
           </span>
@@ -108,7 +111,7 @@ const Carousel = (props) => {
           </div>
           <span className="goToSlide goTo-Dots-padding" onClick={goToNextSlide}>
             <i
-              class="fa-solid fa-chevron-right"
+              className="fa-solid fa-chevron-right"
               style={{ color: " #2c3337" }}
             ></i>
             {/* &gt; */}
