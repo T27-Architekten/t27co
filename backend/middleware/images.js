@@ -51,17 +51,32 @@ const uploads = multer({
 
 // Delete image ----------------------------------------------------------------
 
-const deleteImage = (req, res, next) => {
-  const { image } = req.body;
-  fse.unlink(directory + image, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      // res.status(200).json({ message: "Image is deleted successfully!" });
-      console.log(image + " is successfully deleted.");
-    }
-  });
+const deleteImages = (req, res, next) => {
+  const { images } = req.body;
+
+  if (Array.isArray(images)) {
+    images.forEach((image) => {
+      fse.unlink(directory + image, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // res.status(200).json({ message: "Image is deleted successfully!" });
+          console.log(image + " is successfully deleted.");
+        }
+      });
+    });
+  } else {
+    fse.unlink(directory + images, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // res.status(200).json({ message: "Image is deleted successfully!" });
+        console.log(images + " is successfully deleted.");
+      }
+    });
+  }
+
   next();
 };
 
-module.exports = { uploads, deleteImage };
+module.exports = { uploads, deleteImages };

@@ -69,28 +69,32 @@ const ProjectState = (props) => {
   };
 
   // ------------------------------------------------------------------- Delete an existing project. Authentication required.
-  const deleteProject = async (id) => {
+  const deleteProject = async (id, images) => {
     props.setProgress(10);
     // Api Call
-    const response = await fetch(
-      `${host_env}/api/projects/deleteproject/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await fetch(`${host_env}/api/projects/deleteproject`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ id: id, images: images }),
+    });
+
     props.setProgress(30);
     const json = await response.json();
-    console.log(json, "The project is updated.");
-    props.setProgress(50);
-    const newProject = projects.filter((project) => {
-      return project._id !== id;
-    });
-    props.setProgress(70);
-    setProjects(newProject);
+    if (json.success) {
+      console.log(json, "The project is successfully deleted.");
+      props.setProgress(50);
+      const newProject = projects.filter((project) => {
+        return project._id !== id;
+      });
+      props.setProgress(70);
+      setProjects(newProject);
+      props.showAlert("The project is successfully deleted.");
+    } else {
+      console.log("The was an issue in deleting the project.");
+    }
     props.setProgress(100);
   };
 
@@ -157,33 +161,6 @@ const ProjectState = (props) => {
       props.setProgress(100);
     }
   };
-
-  // const deleteImage = async (projectId, image) => {
-  //   console.log(projectId, image);
-  //   props.setProgress(10);
-  //   const response = await fetch("/api/projects/deleteimage", {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "auth-token": localStorage.getItem("token"),
-  //     },
-  //     body: JSON.stringify({}),
-  //   });
-  //   try {
-  //     props.setProgress(60);
-  //     // Get data if there is.
-  //     const json = await response.json();
-
-  //     if (json.success) {
-  //       props.setProgress(100);
-  //       return json.success;
-  //     }
-  //   } catch (error) {
-  //     props.setProgress(100);
-  //     console.log({ Error: error });
-  //     return false;
-  //   }
-  // };
 
   return (
     <ProjectContext.Provider

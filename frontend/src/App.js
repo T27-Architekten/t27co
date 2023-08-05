@@ -48,6 +48,7 @@ function App() {
   };
 
   // ------------------------------------------------ showModal
+  // props.showModal(heading, content, handleFunction, button)
   const showModal = (heading, content, handleFunction, button) => {
     setModal({
       heading: heading,
@@ -142,7 +143,11 @@ function App() {
                   exact
                   path="/signup"
                   element={
-                    <Signup showAlert={showAlert} setProgress={setProgress} />
+                    <Signup
+                      showAlert={showAlert}
+                      setProgress={setProgress}
+                      showModal={showModal}
+                    />
                   }
                 />
                 <Route

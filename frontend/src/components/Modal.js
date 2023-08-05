@@ -15,11 +15,11 @@ const Modal = (props) => {
           <h1>
             <i className="fa-solid fa-trash" style={{ color: " #2c3337" }} />
             &nbsp;
-            {props.modal.heading}
+            {props.modal?.heading}
           </h1>
           <hr />
           {/* -------------- content */}
-          <p>{props.modal.content}</p>
+          <p>{props.modal?.content}</p>
 
           <div className="action-modal-bttns">
             <button
@@ -29,7 +29,7 @@ const Modal = (props) => {
                 props.setModal(null);
               }}
             >
-              {props.modal.button}
+              {props.modal?.button}
             </button>
             <button
               className="action-button"

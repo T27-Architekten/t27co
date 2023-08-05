@@ -30,6 +30,47 @@
   width: 100%;
 }
 
+.slide-arrow-span {
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  cursor: pointer;
+
+  top: 50%;
+  transform: translateY(-50%);
+  & > i {
+    // position: absolute;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // background: none;
+    border: none;
+    font-size: 2.75rem;
+    transition: all 0.3s ease-in-out;
+    color: lib-scss.$tan-color;
+
+    // margin: 1.5rem;
+    transition: all 0.3s ease-in-out;
+    @extend .t27-text-shadow;
+    // &:hover {
+    //   transform: scale(1.1);
+    //   color: #ffffff;
+    // }
+  }
+  // &:hover {
+  //   transform: scale(1.1);
+  //   color: #ffffff;
+  // }
+}
+
+.carousel-slide > i.carousel-left-arrow {
+  left: 1rem;
+}
+
+.carousel-slide > i.carousel-right-arrow {
+  right: 1rem;
+}
+
 .carousel-close > i {
   text-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
     rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
@@ -63,6 +104,9 @@
 }
 
 .carousel-image {
+  display: block;
+  object-fit: cover;
+  object-position: center;
   max-height: 80vh;
   box-shadow: rgba(196, 196, 196, 0.27) 2.95px 2.95px 15px,
     rgba(196, 196, 196, 0.27) -2.95px -2.95px 15px;

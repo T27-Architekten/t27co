@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules
-backend/assets/uploads
 frontend/src/assets/uploads
 Extra
 /.pnp

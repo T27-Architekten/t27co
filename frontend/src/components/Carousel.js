@@ -59,6 +59,9 @@ const Carousel = (props) => {
         </div>
         <div className="carousel-slides">
           <div className="carousel-slide">
+            {/* <span className="slide-arrow-span">
+              <i className="fa-solid fa-chevron-left slide-arrow-span carousel-left-arrow"></i>
+            </span> */}
             {props?.carousel && (
               <img
                 className="carousel-image"
@@ -67,6 +70,8 @@ const Carousel = (props) => {
                 key={items[activeIndex]}
               />
             )}
+            {/* 
+            <i className="fa-solid fa-chevron-right slide-arrow-span carousel-right-arrow"></i> */}
           </div>
         </div>
 

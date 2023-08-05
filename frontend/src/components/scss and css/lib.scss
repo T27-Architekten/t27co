@@ -1,22 +1,12 @@
+// Variables for colours
 $tan-color: #d1b08f;
 $backgrnd-clr: #2c3337;
 $backgrnd-clr-trans: #2c3337e2;
 $white-color: #eee;
-
 $pine_cone: #677467;
 $gum-leaf: #c1cdc1;
 $burly-wood: #ddb489;
-$cognac: #a53a22;
-$satin-linen: #e3e3d9;
 $deep-teal: #005069;
-$mirage: #121f2f;
-
-.t27-container {
-  position: absolute;
-  padding: 70px 10%;
-  display: flex;
-  width: 100%;
-}
 
 .t27-button {
   background-color: $backgrnd-clr;
@@ -37,6 +27,26 @@ $mirage: #121f2f;
   }
 }
 
+.t27-box-shadow {
+  box-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+    rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+  }
+}
+
+.t27-text-shadow {
+  text-shadow: rgba(0, 0, 0, 0.605) 1.95px 3.05px 5px,
+    rgba(196, 196, 196, 0.27) -1.95px -3.05px 5px;
+
+  &:hover {
+    text-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+      rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+  }
+}
+
 .t27-input-text {
   border-radius: 0.25rem;
   border-width: 0px;
@@ -50,7 +60,8 @@ $mirage: #121f2f;
   &:hover {
     background-color: #4f4f4f;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     inline-size: 100%;
   }
 }
@@ -109,4 +120,144 @@ $mirage: #121f2f;
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+.t27-container {
+  position: absolute;
+  padding: 70px 10%;
+  display: flex;
+  width: 100%;
+}
+
+// ------------------------------------------ Container for two divs.
+
+.t27-container-div-2 {
+  color: $tan-color;
+  justify-content: space-evenly;
+  display: flex;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  // Both divs
+  .t27-container-div-left,
+  .t27-container-div-right {
+    // padding-top: 6.5rem;
+    overflow: auto;
+    padding: 6.5rem 2rem 1.5rem 2rem;
+  }
+
+  // left div
+  .t27-container-div-left {
+    width: 60%;
+    text-align: right;
+    right: 0;
+    position: relative;
+    float: right;
+  }
+
+  // right div
+  .t27-container-div-right {
+    width: 40%;
+    background-color: #23292c;
+
+    text-align: left;
+    left: 0;
+    position: relative;
+    float: left;
+  }
+}
+
+// Input fields and buttons for right div.
+.right-div-input {
+  padding: 40px;
+  padding-top: 20px;
+  margin: 15px;
+  margin-top: 3%;
+  max-width: 400px;
+  text-align: center;
+  color: $tan-color;
+  border-radius: 0.5rem;
+  border: $backgrnd-clr-trans solid 0;
+  @extend .move-right-anim;
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  ul li {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    label {
+      font-weight: 700;
+      font-size: large;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+      @extend .t27-input-text;
+      width: 20rem;
+      color: $tan-color;
+      margin-top: 2px;
+      border: 1px solid #4f4f4f !important;
+      border-color: $tan-color;
+    }
+
+    select {
+      color: $tan-color;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #d1b08f 50%),
+        linear-gradient(135deg, #d1b08f 50%, transparent 50%);
+      background-position: calc(100% - 30px) calc(1.25em - 0px),
+        calc(100% - 25px) calc(1.25em - 0px);
+      background-size: 5px 5px, 5px 5px, 1px 1.5em;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .right-div-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: auto auto auto;
+    justify-content: space-evenly;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .right-div-button {
+    @extend .t27-button;
+
+    &:disabled {
+      cursor: not-allowed;
+      color: #a2876d;
+      background-color: #252b2e;
+      box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+        rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+    }
+
+    &:disabled:hover,
+    &:disabled:active {
+      box-shadow: rgba(0, 0, 0, 0.605) 1.95px 1.95px 5px,
+        rgba(196, 196, 196, 0.27) -1.95px -1.95px 5px;
+    }
+  }
+}
+
+// Export variables for .js files.
+:export {
+  tanColor: $tan-color;
+  backgrndClr: $backgrnd-clr;
+  backgrndClr-trans: $backgrnd-clr-trans;
+  whiteColor: $white-color;
+  pineCone: $pine_cone;
+  gumLeaf: $gum-leaf;
+  burlyWood: $burly-wood;
+  deepTeal: $deep-teal;
 }

@@ -9,13 +9,9 @@ const Updateproject = (props) => {
   const [project, setProject] = useState(
     JSON.parse(localStorage.getItem("project-edit"))
   );
-  // let project = JSON.parse(localStorage.getItem("project-edit"));
-  // const [editedProject, setEditedProject] = useState(
-  //   JSON.parse(localStorage.getItem("project-edit"))
-  // );
   const context = useContext(projectContext);
   const host_env = process.env.REACT_APP_HOST;
-  const { editProject } = context;
+  const { editProject, deleteProject } = context;
   const { showAlert } = props;
   const [images, setImages] = useState(project?.images);
   const navigate = useNavigate();
@@ -23,14 +19,15 @@ const Updateproject = (props) => {
   const [newImages, setNewImages] = useState([]);
 
   useEffect(() => {
-    // document.body.style.overflow = "hidden";
     if (!localStorage.getItem("project-edit")) {
-      // console.log("in useeffect update project", 21);
       navigate("/projects");
     } // eslint-disable-next-line
-  }, [project, images]);
+  }, []);
 
-  // console.log(images);
+  // Event trigger method for add or changing text in input fields.
+  const onChange = (e) => {
+    setProject({ ...project, [e.target.name]: e.target.value });
+  };
 
   // ---------------------------------------------------------------- Update project.
   const handleClick = (e) => {
@@ -60,11 +57,6 @@ const Updateproject = (props) => {
   // Calling the year funciton.
   allYears();
 
-  const onChange = (e) => {
-    setProject({ ...project, [e.target.name]: e.target.value });
-    console.log(project);
-  };
-
   // ---------------------------------------------------------------- Delete Image.
   const handleDeleteImage = async (projectId, image) => {
     // console.log(projectId, image);
@@ -77,7 +69,7 @@ const Updateproject = (props) => {
         "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token"),
       },
-      body: JSON.stringify({ id: projectId, image: image }),
+      body: JSON.stringify({ id: projectId, images: image }),
     });
 
     // Try catch for handling errors.
@@ -96,15 +88,15 @@ const Updateproject = (props) => {
         // Update project useState variable and localstorage. ---------
         let updatedProjectWImgs = project;
         updatedProjectWImgs.images = images.filter((img) => img !== image);
-        console.log(updatedProjectWImgs);
+        // console.log(updatedProjectWImgs);
         setProject(updatedProjectWImgs);
         localStorage.setItem(
           "project-edit",
           JSON.stringify(updatedProjectWImgs)
         );
         // -------------------------------------------
-        props.showAlert("The image has been deleted.");
-        console.log("Image deleted.", 96);
+        props.showAlert("The image has been successfully deleted.");
+        // console.log("Image deleted.", 96);
         props.setProgress(100);
         // return json.success;
       }
@@ -146,7 +138,7 @@ const Updateproject = (props) => {
       body: formData,
     });
 
-    console.log(newImages, 121);
+    // console.log(newImages, 121);
 
     props.setProgress(50);
 
@@ -155,7 +147,7 @@ const Updateproject = (props) => {
       props.setProgress(60);
 
       if (json.success) {
-        console.log(json.images);
+        // console.log(json.images);
 
         // Update images of the page.
         setImages([...json.images, ...images]);
@@ -170,7 +162,7 @@ const Updateproject = (props) => {
         );
         setProject({ ...project, images: [...json.images, ...images] });
 
-        console.log(JSON.parse(localStorage.getItem("project-edit")));
+        // console.log(JSON.parse(localStorage.getItem("project-edit")));
 
         setNewImages([]);
         setAddImageModal(false);
@@ -408,8 +400,17 @@ const Updateproject = (props) => {
                 {/* ------------------------------------------- Delete whole project. */}
                 <button
                   className="update-button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
+                  onClick={() =>
+                    props.showModal(
+                      "Delete project",
+                      "Do you want to delete the project",
+                      () => {
+                        deleteProject(project._id, images);
+                        navigate("/projects");
+                      },
+                      "Delete"
+                    )
+                  }
                 >
                   Delete Project
                 </button>

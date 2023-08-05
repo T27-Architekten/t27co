@@ -2,7 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const fetchuser = require("../middleware/fetchuser");
-const { uploads, deleteImage } = require("../middleware/images");
+const { uploads, deleteImages } = require("../middleware/images");
 // const deleteimage = require("../middleware/images");
 const Project = require("../models/Projects");
 const User = require("../models/Users");
@@ -182,26 +182,27 @@ router.put("/updateproject", fetchuser, async (req, res) => {
 });
 
 // ROUTE 4: Delete an existing project : DELETE "/api/projects/deleteproject". Login required.
-router.delete("/deleteproject", fetchuser, async (req, res) => {
+router.delete("/deleteproject", fetchuser, deleteImages, async (req, res) => {
   try {
-    const { id } = req.body;
+    let success = false;
+    const id = req.body.id;
+    console.log(id);
     // Find the project if it is there.
     let project = await Project.findById({ _id: id });
     if (!project) {
       return res.status(404).send({ Unsuccessfull: "Project not found." });
     }
-
-    // Check if the logged-in user is the authorized user and project belongs to the user who logged in.
-    // if (project.user.toString() !== req.user.id) {
-    //   return res.status(401).send("Not allowed");
-    // }
-
     // Find and delete the project.
     project = await Project.findByIdAndDelete({ _id: id });
-    res.json({ Success: "The project has been deleted." });
+    if (project) {
+      success = true;
+      console.log("Tha Project has been deleted.");
+      res.json({ success, Success: "The project has been deleted." });
+    }
   } catch (error) {
+    success = false;
     console.error(error.message);
-    res.status(500).json({ Error: "Internal server error." });
+    res.status(500).json({ success, Error: "Internal server error." });
   }
 });
 
@@ -225,13 +226,13 @@ router.post("/fetchproject", fetchuser, async (req, res) => {
 });
 
 // ROUTE 5: Delete image: POST "/api/projects/deleteimage". Login required.
-router.put("/deleteimage", fetchuser, deleteImage, async (req, res) => {
+router.put("/deleteimage", fetchuser, deleteImages, async (req, res) => {
   try {
     let success = false;
 
     // Get id and image from the body.
-    const { id, image } = req.body;
-    console.log(id + image, 226);
+    const { id, images } = req.body;
+    console.log(id + images, 226);
     // Check the availability of the project.
     let projectId = await Project.findById({ _id: id });
     if (!projectId) {
@@ -241,7 +242,7 @@ router.put("/deleteimage", fetchuser, deleteImage, async (req, res) => {
     // Find and delete the image from the images array in the project.
     const deleteImage = await Project.findByIdAndUpdate(
       { _id: id },
-      { $pull: { images: image } }
+      { $pull: { images: images } }
     );
 
     // Respond if succussfully updated.

@@ -5,7 +5,7 @@ const AuthState = (props) => {
   const host_env = process.env.REACT_APP_HOST;
   // const [user, setUser] = useState();
 
-  // Login user
+  // --------------------------------------------------------------- Login user
   const login = async ({ email, password }) => {
     props.setProgress(10);
     // Api call
@@ -31,7 +31,7 @@ const AuthState = (props) => {
     }
   };
 
-  // Create new user.
+  // --------------------------------------------------------------- Create new user.
   const createUser = async ({ name, email, password, cpassword, role }) => {
     try {
       props.setProgress(10);
@@ -82,10 +82,11 @@ const AuthState = (props) => {
       props.setProgress(100);
     } catch (error) {
       console.log("error :" + error);
+      props.setProgress(100);
     }
   };
 
-  // Get logged in user details.
+  // --------------------------------------------------------------- Get logged in user details.
   const getUser = async () => {
     try {
       const response = await fetch(`${host_env}/api/auth/getuser`, {
